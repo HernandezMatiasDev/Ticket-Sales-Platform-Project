@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace TicketingSystem.Application.Ports
+namespace TicketingSystem.Application.Interfaces
 {
     /// <summary>
     /// Puerto para implementar el patrón Unit of Work (Unidad de Trabajo).

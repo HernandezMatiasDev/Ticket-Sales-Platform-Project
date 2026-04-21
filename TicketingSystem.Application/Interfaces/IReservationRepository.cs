@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Entities;
 
-namespace TicketingSystem.Application.Ports
+namespace TicketingSystem.Application.Interfaces
 {
     /// <summary>
     /// Puerto de salida para gestionar la persistencia de las reservas.

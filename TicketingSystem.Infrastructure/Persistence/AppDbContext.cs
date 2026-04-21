@@ -1,73 +1,37 @@
 using Microsoft.EntityFrameworkCore;
 using TicketingSystem.Domain.Entities;
-using System.Reflection;
+// NOTA: Para que el código de OnModelCreating funcione, debes crear las clases de configuración
+// (ej. ReservationConfiguration.cs) en una carpeta como "Persistence/Configurations"
+// y luego descomentar las líneas en OnModelCreating.
 
 namespace TicketingSystem.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+// Se cambia el nombre a TicketingDbContext para unificarlo en todo el proyecto.
+public class TicketingDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public TicketingDbContext(DbContextOptions<TicketingDbContext> options) : base(options) { }
 
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Sector> Sectors => Set<Sector>();
     public DbSet<Seat> Seats => Set<Seat>();
+    // Se añaden los DbSet que faltaban para Reservation y AuditLog
+    public DbSet<Reservation> Reservations => Set<Reservation>();
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Esto aplica automáticamente todas las configuraciones en la carpeta Configurations
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
+
+        // El código que has proporcionado es la forma correcta de configurar las entidades
+        // usando Fluent API en clases separadas.
+
+        // Configuraciones de tu compañero
+        // modelBuilder.ApplyConfiguration(new EventConfiguration());
+        // modelBuilder.ApplyConfiguration(new SectorConfiguration());
+        // modelBuilder.ApplyConfiguration(new SeatConfiguration()); // ¡AQUÍ ES DONDE ÉL PONE EL CONCURRENCY TOKEN!
+
+        // Tus configuraciones
+        // modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+        // modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
     }
 }
-
-
-// {
-//     public DbSet<Event> Events => Set<Event>();
-//     public DbSet<Sector> Sectors => Set<Sector>();
-//     public DbSet<Seat> Seats => Set<Seat>();
-
-//     public AppDbContext(DbContextOptions<AppDbContext> options)
-//         : base(options)
-//     {
-//     }
-
-//     protected override void OnModelCreating(ModelBuilder modelBuilder)
-//     {
-//         base.OnModelCreating(modelBuilder);
-
-//         modelBuilder.Entity<Event>(entity =>
-//         {
-//             entity.HasKey(e => e.Id);
-
-//             entity.Property(e => e.Name)
-//                   .IsRequired()
-//                   .HasMaxLength(200);
-
-//             entity.HasMany(e => e.Sectors)
-//                   .WithOne(s => s.Event)
-//                   .HasForeignKey(s => s.EventId);
-//         });
-
-//         modelBuilder.Entity<Sector>(entity =>
-//         {
-//             entity.HasKey(s => s.Id);
-
-//             entity.Property(s => s.Name)
-//                   .IsRequired()
-//                   .HasMaxLength(100);
-
-//             entity.HasMany(s => s.Seats)
-//                   .WithOne(se => se.Sector)
-//                   .HasForeignKey(se => se.SectorId);
-//         });
-
-//         modelBuilder.Entity<Seat>(entity =>
-//         {
-//             entity.HasKey(s => s.Id);
-
-//             entity.Property(s => s.Number)
-//                   .IsRequired()
-//                   .HasMaxLength(10);
-//         });
-//     }
-// }

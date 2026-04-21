@@ -1,5 +1,12 @@
 namespace TicketingSystem.Domain.Entities;
 
+public enum SeatStatus
+{
+    Available,
+    Reserved,
+    Sold
+}
+
 public class Seat
 {
     public Guid Id { get; private set; }
@@ -7,27 +14,32 @@ public class Seat
     public int Number { get; private set; }
     public string Row { get; set; } = string.Empty;
 
-    public bool IsAvailable { get; private set; } = true;
+    public SeatStatus Status { get; private set; } = SeatStatus.Available;
 
-    public Guid SectorId { get; private set; }
+    public int SectorId { get; private set; }
 
     public Sector Sector { get; private set; } = null!;
 
     private Seat() { }
 
-    public Seat(int number, Guid sectorId)
+    public Seat(int number, int sectorId)
     {
         Number = number;
         SectorId = sectorId;
     }
 
-    public void MarkAsUnavailable()
+    public void Reserve()
     {
-        IsAvailable = false;
+        Status = SeatStatus.Reserved;
     }
 
-    public void MarkAsAvailable()
+    public void MakeAvailable()
     {
-        IsAvailable = true;
+        Status = SeatStatus.Available;
+    }
+
+    public void Sell()
+    {
+        Status = SeatStatus.Sold;
     }
 }

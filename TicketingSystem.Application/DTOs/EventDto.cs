@@ -1,3 +1,3 @@
 namespace TicketingSystem.Application.DTOs;
 
-public record EventDto(Guid Id, string Name, DateTime Date, string Venue);
+public record EventDto(int Id, string Name, DateTime Date, string Venue);

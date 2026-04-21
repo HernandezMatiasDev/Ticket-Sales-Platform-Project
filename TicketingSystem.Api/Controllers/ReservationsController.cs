@@ -38,7 +38,7 @@ namespace TicketingSystem.Api.Controllers
             try
             {
                 // Ejecutamos la transacción
-                var reservation = await _reserveSeatUseCase.ExecuteAsync(request.UserId, seatId);
+                var reservation = await _reserveSeatUseCase.ExecuteAsync(request.UserId, eventId, seatId);
                 
                 // 200 OK (o 201 Created) si todo fue un éxito
                 return Ok(new 

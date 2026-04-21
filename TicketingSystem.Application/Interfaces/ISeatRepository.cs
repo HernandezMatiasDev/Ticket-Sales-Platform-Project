@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Entities; // Asumimos que la entidad Seat está en este namespace
 
-namespace TicketingSystem.Application.Ports
+namespace TicketingSystem.Application.Interfaces
 {
     /// <summary>
     /// Puerto de salida (contrato) para acceder a los datos de la entidad Seat (Butaca).

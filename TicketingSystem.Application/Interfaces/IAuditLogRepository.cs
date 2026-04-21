@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Entities;
 
-namespace TicketingSystem.Application.Ports
+namespace TicketingSystem.Application.Interfaces
 {
     /// <summary>
     /// Puerto de salida para el registro de auditoría.

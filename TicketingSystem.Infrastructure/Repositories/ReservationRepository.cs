@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TicketingSystem.Domain.Entities;
-using TicketingSystem.Application.Ports;
+using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Infrastructure.Persistence;
 
 namespace TicketingSystem.Infrastructure.Repositories
 {
@@ -16,7 +17,7 @@ namespace TicketingSystem.Infrastructure.Repositories
     {
         // Nota: Asume que "TicketingDbContext" es el nombre de la clase DbContext que creó tu compañero.
         // Ajusta el nombre si él le puso otro (ej. ApplicationDbContext).
-        private readonly TicketingDbContext _context;
+        private readonly TicketingDbContext _context; // Asegúrate que el nombre del DbContext sea consistente
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ReservationRepository"/>.

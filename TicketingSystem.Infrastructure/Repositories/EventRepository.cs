@@ -7,9 +7,9 @@ namespace TicketingSystem.Infrastructure.Repositories;
 
 public class EventRepository : IEventRepository
 {
-    private readonly AppDbContext _context;
+    private readonly TicketingDbContext _context;
 
-    public EventRepository(AppDbContext context)
+    public EventRepository(TicketingDbContext context)
     {
         _context = context;
     }
@@ -20,7 +20,7 @@ public class EventRepository : IEventRepository
         return await _context.Events.ToListAsync();
     }
 
-    public async Task<Event?> GetByIdWithDetailsAsync(Guid eventId)
+    public async Task<Event?> GetByIdWithDetailsAsync(int eventId)
     {
         // Aquí usamos Include para traer también los sectores y sus asientos (Eager Loading)
         return await _context.Events

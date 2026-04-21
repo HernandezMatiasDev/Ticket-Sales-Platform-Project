@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using TicketingSystem.Domain.Ports;
+using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Domain.Entities;
 
 namespace TicketingSystem.Infrastructure.Workers
@@ -69,14 +69,14 @@ namespace TicketingSystem.Infrastructure.Workers
                                 var seat = await seatRepo.GetByIdAsync(reservation.SeatId);
                                 if (seat != null)
                                 {
-                                    seat.Status = "Available"; // Estado para que otro pueda comprarla
+                                    seat.MakeAvailable(); // Usamos el método del dominio para liberar la butaca
                                     await seatRepo.UpdateAsync(seat);
                                 }
 
                                 // 3. Log de auditoría (UserId = null porque es una acción automática del sistema)
                                 var auditLog = new AuditLog(
                                     Guid.NewGuid(),
-                                    null, 
+                                    0, // Usamos 0 (o tu ID para el sistema) ya que int no acepta null.
                                     "RESERVE_EXPIRED",
                                     "Reservation",
                                     reservation.Id.ToString(),

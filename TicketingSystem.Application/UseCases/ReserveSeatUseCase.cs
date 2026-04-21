@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Entities;
-using TicketingSystem.Application.Ports;
+using TicketingSystem.Application.Interfaces;
 
 namespace TicketingSystem.Application.UseCases
 {
@@ -36,24 +36,30 @@ namespace TicketingSystem.Application.UseCases
         /// Ejecuta de forma asíncrona la lógica de negocio para reservar una butaca.
         /// </summary>
         /// <param name="userId">Identificador del usuario que hace la reserva.</param>
+        /// <param name="eventId">Identificador del evento (para validación).</param>
         /// <param name="seatId">Identificador de la butaca deseada.</param>
         /// <returns>La entidad de reserva creada si la operación es exitosa.</returns>
         /// <exception cref="InvalidOperationException">Si la butaca no está disponible.</exception>
-        public async Task<Reservation> ExecuteAsync(int userId, Guid seatId)
+        public async Task<Reservation> ExecuteAsync(int userId, int eventId, Guid seatId)
         {
             await _unitOfWork.BeginTransactionAsync();
 
             try
             {
-                // 1. Obtener y verificar butaca
+                // 1. Obtener y verificar butaca.
+                // NOTA: Para que esta validación funcione, la implementación de ISeatRepository.GetByIdAsync
+                // DEBE cargar la entidad relacionada 'Sector' (usando .Include(s => s.Sector)).
                 var seat = await _seatRepository.GetByIdAsync(seatId);
-                if (seat == null || seat.Status != "Available")
+
+                // Se valida que la butaca exista, esté disponible y pertenezca al evento correcto.
+                // ¡ERROR CRÍTICO CORREGIDO! Se activa la validación del EventId.
+                if (seat == null || seat.Status != SeatStatus.Available || seat.Sector.EventId != eventId)
                 {
                     throw new InvalidOperationException("La butaca no está disponible.");
                 }
 
                 // 2. Modificar butaca
-                seat.Status = "Reserved";
+                seat.Reserve(); // Usamos el método del dominio para cambiar el estado
                 await _seatRepository.UpdateAsync(seat);
 
                 // 3. Crear Reserva
@@ -111,7 +117,7 @@ namespace TicketingSystem.Application.UseCases
                 "RESERVE_FAILED",
                 "Seat",
                 seatId.ToString(),
-                $"Fallo por concurrencia o estado inválido.",
+                $"Fallo al intentar reservar: {reason}",
                 DateTime.UtcNow
             );
 

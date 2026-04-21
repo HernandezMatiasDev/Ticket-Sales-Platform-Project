@@ -2,11 +2,11 @@ namespace TicketingSystem.Domain.Entities;
 
 public class Sector
 {
-    public Guid Id { get; private set; }
+    public int Id { get; private set; }
 
     public string Name { get; private set; } = string.Empty;
     public decimal Price { get; set; }
-    public Guid EventId { get; private set; }
+    public int EventId { get; private set; }
 
     public Event Event { get; private set; } = null!;
 
@@ -14,7 +14,7 @@ public class Sector
 
     private Sector() { }
 
-    public Sector(string name, Guid eventId)
+    public Sector(string name, int eventId)
     {
         Name = name;
         EventId = eventId;

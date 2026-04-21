@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using TicketingSystem.Domain.Entities;
-using TicketingSystem.Domain.Ports;
+using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Infrastructure.Persistence;
 
 namespace TicketingSystem.Infrastructure.Repositories
 {

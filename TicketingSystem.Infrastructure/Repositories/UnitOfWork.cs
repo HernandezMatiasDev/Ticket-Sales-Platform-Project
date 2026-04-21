@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
-using TicketingSystem.Application.Ports;
+using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Infrastructure.Persistence;
 
 namespace TicketingSystem.Infrastructure.Repositories
 {
@@ -10,7 +11,7 @@ namespace TicketingSystem.Infrastructure.Repositories
     /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly TicketingDbContext _context;
+        private readonly TicketingDbContext _context; // Asegúrate que el nombre del DbContext sea consistente
         private IDbContextTransaction _currentTransaction;
 
         /// <summary>

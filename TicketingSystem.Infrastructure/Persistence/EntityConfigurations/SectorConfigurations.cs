@@ -2,7 +2,7 @@ using TicketingSystem.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configurations;
+namespace TicketingSystem.Infrastructure.Persistence.Configurations;
 
 public class SectorConfiguration : IEntityTypeConfiguration<Sector>
 {

@@ -26,7 +26,7 @@ private readonly TicketingSystem.Application.Queries.GetSeatMapQuery _getSeatMap
 
     // GET: api/events/{eventId}/sectors/{sectorId}/seats
     [HttpGet("{eventId}/sectors/{sectorId}/seats")]
-    public async Task<IActionResult> GetSeatMap(Guid eventId, Guid sectorId)
+    public async Task<IActionResult> GetSeatMap(int eventId, int sectorId)
     {
         var seatMap = await _getSeatMapQuery.ExecuteAsync(eventId, sectorId);
         
