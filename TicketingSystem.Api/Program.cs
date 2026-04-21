@@ -1,41 +1,42 @@
+using Microsoft.EntityFrameworkCore;
+using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Application.Queries;
+using TicketingSystem.Infrastructure.Persistence;
+using TicketingSystem.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// 1. Configuración de Swagger/OpenAPI (Opcional pero recomendado para probar)
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// 2. Contexto de Base de Datos
+// Asegúrate de tener la conexión "DefaultConnection" en tu appsettings.json
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// 3. Registro de Repositorios e Interfaces
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+// 4. Registro de tus Queries (CQRS)
+builder.Services.AddScoped<GetEventsQuery>();
+builder.Services.AddScoped<GetSeatMapQuery>();
+
+// 5. Soporte para Controladores (Importante para que funcione tu EventsController)
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// 6. Mapeo de Controladores
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
