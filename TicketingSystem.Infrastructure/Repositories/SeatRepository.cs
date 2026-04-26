@@ -16,7 +16,7 @@ namespace TicketingSystem.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Seat> GetByIdAsync(Guid seatId)
+        public async Task<Seat?> GetByIdAsync(Guid seatId)
         {
             // Es VITAL el .Include(s => s.Sector) para que el ReserveSeatUseCase 
             // pueda validar que la butaca pertenece al evento correcto.

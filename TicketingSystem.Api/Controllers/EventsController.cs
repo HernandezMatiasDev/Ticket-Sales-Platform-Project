@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using TicketingSystem.Application.Queries;
+using TicketingSystem.Application.UseCases.Handlers;
+using TicketingSystem.Application.UseCases.Commands;
+using TicketingSystem.Application.UseCases.Queries;
 
 namespace TicketingSystem.Api.Controllers;
 
@@ -8,13 +10,23 @@ namespace TicketingSystem.Api.Controllers;
 public class EventsController : ControllerBase
 {
 // Cambia esto en el constructor y en las variables privadas:
-private readonly TicketingSystem.Application.Queries.GetEventsQuery _getEventsQuery;
-private readonly TicketingSystem.Application.Queries.GetSeatMapQuery _getSeatMapQuery;
+private readonly TicketingSystem.Application.UseCases.Queries.GetEventsQuery _getEventsQuery;
+private readonly TicketingSystem.Application.UseCases.Queries.GetSeatMapQuery _getSeatMapQuery;
     public EventsController(GetEventsQuery getEventsQuery, GetSeatMapQuery getSeatMapQuery)
     {
         _getEventsQuery = getEventsQuery;
         _getSeatMapQuery = getSeatMapQuery;
     }
+
+    
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateEventCommand command, [FromServices] CreateEventHandler handler)
+    {
+        var eventId = await handler.HandleAsync(command);
+        
+        // Devolvemos un 201 Created según el estándar REST
+        return CreatedAtAction(nameof(GetAll), new { id = eventId }, new { id = eventId, message = "Evento creado con éxito" });
+    }   
 
     // GET: api/events
     [HttpGet]

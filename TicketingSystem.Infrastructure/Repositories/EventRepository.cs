@@ -13,6 +13,11 @@ public class EventRepository : IEventRepository
     {
         _context = context;
     }
+    public async Task AddAsync(Event newEvent)
+    {
+        _context.Events.Add(newEvent);
+        await Task.CompletedTask;
+    }
 
     public async Task<IEnumerable<Event>> GetAllAsync()
     {

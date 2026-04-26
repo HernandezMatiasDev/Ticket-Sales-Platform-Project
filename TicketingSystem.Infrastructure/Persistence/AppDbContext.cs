@@ -14,13 +14,31 @@ public class TicketingDbContext : DbContext
     public DbSet<Event> Events => Set<Event>();
     public DbSet<Sector> Sectors => Set<Sector>();
     public DbSet<Seat> Seats => Set<Seat>();
-    // Se añaden los DbSet que faltaban para Reservation y AuditLog
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+
+
+// para crear 1 evento con 2 sectores
+        // modelBuilder.Entity<Event>().HasData(new Event("Concierto de Rock", DateTime.Now.AddDays(30), "Estadio Municipal") 
+        // { 
+        //     Id = 1, 
+        //     Status = "Active" 
+        // });
+
+        // // 2. Definir Sectores (2 sectores de 50 butacas cada uno)
+        // modelBuilder.Entity<Sector>().HasData(
+        //     new { Id = 1, EventId = 1, Name = "Vip", Price = 5000m, Capacity = 50 },
+        //     new { Id = 2, EventId = 1, Name = "General", Price = 2000m, Capacity = 50 }
+        // );
+
+
+
+
 
         // El código que has proporcionado es la forma correcta de configurar las entidades
         // usando Fluent API en clases separadas.

@@ -14,7 +14,7 @@ namespace TicketingSystem.Application.Interfaces
         /// Obtiene una butaca por su identificador único.
         /// </summary>
         /// <param name="seatId">Identificador de la butaca.</param>
-        Task<Seat> GetByIdAsync(Guid seatId);
+        Task<Seat?> GetByIdAsync(Guid seatId);
 
         /// <summary>
         /// Actualiza el estado y la versión (para bloqueo optimista) de una butaca existente.

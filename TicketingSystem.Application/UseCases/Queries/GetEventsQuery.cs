@@ -1,7 +1,7 @@
 using TicketingSystem.Application.DTOs;
 using TicketingSystem.Application.Interfaces;
 
-namespace TicketingSystem.Application.Queries;
+namespace TicketingSystem.Application.UseCases.Queries;
 
 public class GetEventsQuery
 {
@@ -11,6 +11,6 @@ public class GetEventsQuery
     public async Task<IEnumerable<EventDto>> ExecuteAsync()
     {
         var events = await _repository.GetAllAsync();
-        return events.Select(e => new EventDto(e.Id, e.Name, e.Date, e.Venue));
+        return events.Select(e => new EventDto(e.Id, e.Name, e.EventDate, e.Venue));
     }
 }

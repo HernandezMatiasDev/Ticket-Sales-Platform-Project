@@ -2,7 +2,7 @@ using TicketingSystem.Application.DTOs;
 using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Domain.Entities;
 
-namespace TicketingSystem.Application.Queries;
+namespace TicketingSystem.Application.UseCases.Queries;
 
 public class GetSeatMapQuery
 {

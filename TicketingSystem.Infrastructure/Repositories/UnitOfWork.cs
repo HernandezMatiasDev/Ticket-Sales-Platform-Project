@@ -12,7 +12,7 @@ namespace TicketingSystem.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly TicketingDbContext _context; // Asegúrate que el nombre del DbContext sea consistente
-        private IDbContextTransaction _currentTransaction;
+        private IDbContextTransaction? _currentTransaction;
 
         /// <summary>
         /// Inicializa la Unidad de Trabajo con el DbContext del sistema.
