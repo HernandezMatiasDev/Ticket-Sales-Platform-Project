@@ -1,4 +1,5 @@
 const API_URL = "http://localhost:5029/api/Events";
+const AUTH_URL = "http://localhost:5029/api/Auth";
 
 // Esta función se ejecuta apenas carga la página
 async function obtenerEventos() 
@@ -70,6 +71,103 @@ function mostrarDetalles(nombre) {
     alert("¡Has seleccionado: " + nombre + "! \nAquí es donde JavaScript pedirá los asientos a la API en el siguiente paso.");
 }
 
+// === Lógica de Autenticación ===
+
+function actualizarUI() {
+    const token = localStorage.getItem('jwt_token');
+    const email = localStorage.getItem('user_email');
+    const authButtons = document.getElementById('auth-buttons');
+    const userMenu = document.getElementById('user-menu');
+    const userEmailSpan = document.getElementById('user-email');
+
+    if (token && email) {
+        if (authButtons) authButtons.classList.add('d-none');
+        if (userMenu) userMenu.classList.remove('d-none');
+        if (userEmailSpan) userEmailSpan.textContent = email;
+    } else {
+        if (authButtons) authButtons.classList.remove('d-none');
+        if (userMenu) userMenu.classList.add('d-none');
+        if (userEmailSpan) userEmailSpan.textContent = '';
+    }
+}
+
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const msgDiv = document.getElementById('loginMessage');
+    
+    try {
+        const res = await fetch(`${AUTH_URL}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+            localStorage.setItem('jwt_token', data.token);
+            localStorage.setItem('user_email', email);
+            
+            // Cerrar modal exitosamente
+            const modalEl = document.getElementById('loginModal');
+            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modal.hide();
+            
+            actualizarUI();
+            document.getElementById('loginForm').reset();
+            msgDiv.classList.add('d-none');
+        } else {
+            msgDiv.classList.remove('d-none');
+            msgDiv.className = 'alert alert-danger mb-3';
+            msgDiv.textContent = data.error || 'Error al iniciar sesión';
+        }
+    } catch (error) {
+        console.error(error);
+        msgDiv.classList.remove('d-none');
+        msgDiv.className = 'alert alert-danger mb-3';
+        msgDiv.textContent = 'Error de conexión con el servidor.';
+    }
+});
+
+document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const msgDiv = document.getElementById('registerMessage');
+    
+    try {
+        const res = await fetch(`${AUTH_URL}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        
+        msgDiv.classList.remove('d-none');
+        if (res.ok) {
+            msgDiv.className = 'alert alert-success mb-3';
+            msgDiv.textContent = data.message || 'Registro exitoso. Ahora puedes iniciar sesión.';
+            document.getElementById('registerForm').reset();
+        } else {
+            msgDiv.className = 'alert alert-danger mb-3';
+            // Procesar errores de validación de Identity si es que vienen en una lista
+            msgDiv.textContent = data.error || (data.errors ? Object.values(data.errors).flat().join(', ') : 'Error al registrarse');
+        }
+    } catch (error) {
+        console.error(error);
+        msgDiv.classList.remove('d-none');
+        msgDiv.className = 'alert alert-danger mb-3';
+        msgDiv.textContent = 'Error de conexión con el servidor.';
+    }
+});
+
+function cerrarSesion() {
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('user_email');
+    actualizarUI();
+}
 
 // Llamamos a la función
+actualizarUI();
 obtenerEventos();

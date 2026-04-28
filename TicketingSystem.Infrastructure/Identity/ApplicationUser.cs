@@ -4,5 +4,12 @@ namespace TicketingSystem.Infrastructure.Identity;
 
 public class ApplicationUser : IdentityUser<int>
 {
-    // Aquí puedes agregar propiedades extendidas en el futuro si lo necesitas (ej: FirstName, LastName)
+    // Datos personales
+    public string FirstName { get; set; } = string.Empty;
+
+    public string LastName { get; set; } = string.Empty;
+    
+    
+    // Auditoría básica
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
