@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Domain.Entities;
 using TicketingSystem.Application.UseCases.Queries;
 using TicketingSystem.Application.UseCases.Commands;
 using TicketingSystem.Application.UseCases;
@@ -67,6 +68,11 @@ builder.Services.AddScoped<GetEventsQuery>();
 builder.Services.AddScoped<GetSeatMapQuery>();
 builder.Services.AddScoped<ReserveSeatUseCase>();
 builder.Services.AddScoped<ICommandHandler<CreateEventCommand, int>, CreateEventHandler>();
+// 5. Registro de Casos de Uso y Queries
+builder.Services.AddScoped<IQueryHandler<GetEventsQuery, IEnumerable<Event>>, GetEventsHandler>();
+builder.Services.AddScoped<IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>>, GetSeatMapHandler>();
+builder.Services.AddScoped<IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>>, GetEventSectorsHandler>();
+
 
 // Registro del Servicio de Autenticación
 builder.Services.AddScoped<IAuthService, AuthService>();

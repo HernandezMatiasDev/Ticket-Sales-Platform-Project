@@ -1,16 +1,8 @@
-using TicketingSystem.Application.DTOs;
 using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Domain.Entities;
 
 namespace TicketingSystem.Application.UseCases.Queries;
 
-public class GetEventsQuery
-{
-    private readonly IEventRepository _repository;
-    public GetEventsQuery(IEventRepository repository) => _repository = repository;
-
-    public async Task<IEnumerable<EventDto>> ExecuteAsync()
-    {
-        var events = await _repository.GetAllAsync();
-        return events.Select(e => new EventDto(e.Id, e.Name, e.EventDate, e.Venue));
-    }
-}
+// Ahora es un record plano que representa la solicitud. 
+// Como no devuelve DTO, el tipo de retorno es IEnumerable<Event>.
+public record GetEventsQuery() : IQuery<IEnumerable<Event>>;

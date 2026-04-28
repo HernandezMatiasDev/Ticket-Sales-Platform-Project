@@ -4,11 +4,9 @@ using TicketingSystem.Domain.Entities; // Asumimos que la entidad Seat está en 
 
 namespace TicketingSystem.Application.Interfaces;
 
-public interface ISeatRepository
-{
-    Task<Seat?> GetByIdAsync(Guid seatId);
-    
-    Task<IEnumerable<Seat>> GetBySectorIdAsync(int sectorId);
+public interface ISectorRepository
+{    
 
-    Task UpdateAsync(Seat seat);
+    Task<IEnumerable<Sector>> GetByEventIdAsync(int eventId);
+
 }
