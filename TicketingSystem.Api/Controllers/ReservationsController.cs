@@ -1,5 +1,7 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketingSystem.Application.UseCases;
@@ -10,6 +12,7 @@ namespace TicketingSystem.Api.Controllers
     /// Controlador REST para gestionar la creación de reservas de butacas en eventos.
     /// </summary>
     [ApiController]
+    [Authorize]
     // Ruta jerárquica exacta como sugiere el estándar del TP
     [Route("api/v1/events/{eventId}/seats/{seatId}/reservations")]
     public class ReservationsController : ControllerBase
@@ -37,8 +40,15 @@ namespace TicketingSystem.Api.Controllers
         {
             try
             {
+                // Extraemos el UserId directo desde el Claim NameIdentifier configurado en el Token
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+                {
+                    return Unauthorized(new { error = "El token es inválido o no contiene un identificador de usuario válido." });
+                }
+
                 // Ejecutamos la transacción
-                var reservation = await _reserveSeatUseCase.ExecuteAsync(request.UserId, eventId, seatId);
+                var reservation = await _reserveSeatUseCase.ExecuteAsync(userId, eventId, seatId);
                 
                 // 200 OK (o 201 Created) si todo fue un éxito
                 return Ok(new 
@@ -69,14 +79,10 @@ namespace TicketingSystem.Api.Controllers
 
     /// <summary>
     /// DTO (Data Transfer Object) para recibir los datos del cuerpo de la solicitud de reserva.
-    /// Nota: Asumimos que el UserId viene en el body temporalmente. Si luego implementan 
-    /// autenticación con JWT, el UserId se sacaría de los Claims del token.
     /// </summary>
     public class ReserveRequestDto
     {
-        /// <summary>
-        /// Identificador del usuario que intenta realizar la reserva.
-        /// </summary>
-        public int UserId { get; set; }
+        // Actualmente vacío ya que el UserId se toma de forma segura del JWT.
+        // Se mantiene la clase lista por si necesitas recibir datos adicionales en el payload de reserva.
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TicketingSystem.Domain.Entities;
 
-namespace TicketingSystem.Infrastructure.Configurations
+namespace TicketingSystem.Infrastructure.Persistence.Configurations
 {
     /// <summary>
     /// Configuración de Entity Framework Core para la entidad AuditLog.

@@ -1,7 +1,12 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Application.UseCases.Queries;
 using TicketingSystem.Application.UseCases.Commands;
+using TicketingSystem.Application.UseCases;
 using TicketingSystem.Application.UseCases.Handlers;
 
 // NOTA: El nombre del DbContext debe ser consistente. Usaremos "TicketingDbContext" como está en la mayoría de los repositorios.
@@ -10,6 +15,8 @@ using TicketingSystem.Application.UseCases.Handlers;
 using TicketingSystem.Infrastructure.Persistence;
 using TicketingSystem.Infrastructure.Repositories;
 using TicketingSystem.Infrastructure.Workers;
+using TicketingSystem.Infrastructure.Identity;
+using TicketingSystem.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +28,30 @@ builder.Services.AddSwaggerGen();
 // Asegúrate de tener la conexión "DefaultConnection" en tu appsettings.json
 builder.Services.AddDbContext<TicketingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configuración de Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
+    .AddEntityFrameworkStores<TicketingDbContext>()
+    .AddDefaultTokenProviders();
+
+// Configuración de Autenticación JWT
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.ASCII.GetBytes(jwtSettings["Key"] ?? "ClaveParaJWTSuperSecretaDeDesarrollo12345!!");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 // 3. Registro de Repositorios (Puertos y Adaptadores)
 builder.Services.AddScoped<IEventRepository, EventRepository>();
@@ -34,9 +65,11 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // 5. Registro de Casos de Uso y Queries (Capa de Aplicación)
 builder.Services.AddScoped<GetEventsQuery>();
 builder.Services.AddScoped<GetSeatMapQuery>();
-//builder.Services.AddScoped<ReserveSeatUseCase>();
+builder.Services.AddScoped<ReserveSeatUseCase>();
 builder.Services.AddScoped<ICommandHandler<CreateEventCommand, int>, CreateEventHandler>();
 
+// Registro del Servicio de Autenticación
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // 6. Registro de Servicios en Segundo Plano (Workers)
 builder.Services.AddHostedService<ExpiredReservationWorker>();
@@ -64,6 +97,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+// Middlewares de Seguridad (Orden importante: siempre AuthN antes de AuthZ y antes del Mapeo)
+app.UseAuthentication();
+app.UseAuthorization();
 
 // 8. Mapeo de Controladores
 app.MapControllers();

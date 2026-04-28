@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TicketingSystem.Infrastructure.Identity;
 using TicketingSystem.Domain.Entities;
+using TicketingSystem.Infrastructure.Persistence.Configurations;
 // NOTA: Para que el código de OnModelCreating funcione, debes crear las clases de configuración
 // (ej. ReservationConfiguration.cs) en una carpeta como "Persistence/Configurations"
 // y luego descomentar las líneas en OnModelCreating.
@@ -7,7 +11,7 @@ using TicketingSystem.Domain.Entities;
 namespace TicketingSystem.Infrastructure.Persistence;
 
 // Se cambia el nombre a TicketingDbContext para unificarlo en todo el proyecto.
-public class TicketingDbContext : DbContext
+public class TicketingDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
 {
     public TicketingDbContext(DbContextOptions<TicketingDbContext> options) : base(options) { }
 
@@ -20,6 +24,8 @@ public class TicketingDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        
+        // Configuraciones predeterminadas de IdentityDbContext ya cubiertas por el base.OnModelCreating
 
 
 
@@ -44,12 +50,12 @@ public class TicketingDbContext : DbContext
         // usando Fluent API en clases separadas.
 
         // Configuraciones de tu compañero
-        // modelBuilder.ApplyConfiguration(new EventConfiguration());
-        // modelBuilder.ApplyConfiguration(new SectorConfiguration());
-        // modelBuilder.ApplyConfiguration(new SeatConfiguration()); // ¡AQUÍ ES DONDE ÉL PONE EL CONCURRENCY TOKEN!
+        modelBuilder.ApplyConfiguration(new EventConfiguration());
+        modelBuilder.ApplyConfiguration(new SectorConfiguration());
+        modelBuilder.ApplyConfiguration(new SeatConfiguration()); // ¡AQUÍ ES DONDE ÉL PONE EL CONCURRENCY TOKEN!
 
         // Tus configuraciones
-        // modelBuilder.ApplyConfiguration(new ReservationConfiguration());
-        // modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
+        modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+        modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
     }
 }

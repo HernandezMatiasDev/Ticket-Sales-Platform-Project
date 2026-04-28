@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TicketingSystem.Domain.Entities;
 
-namespace TicketingSystem.Infrastructure.Configurations
+namespace TicketingSystem.Infrastructure.Persistence.Configurations
 {
     public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
     {
