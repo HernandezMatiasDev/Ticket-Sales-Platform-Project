@@ -27,20 +27,33 @@ public class TicketingDbContext : IdentityDbContext<ApplicationUser, IdentityRol
         
         // Configuraciones predeterminadas de IdentityDbContext ya cubiertas por el base.OnModelCreating
 
+        // === PRECARGA DE DATOS (SEEDING) ===
 
+        // 1. Crear el Evento con fecha fija
+        var eventId = 1;
+        modelBuilder.Entity<Event>().HasData(
+            new { Id = eventId, Name = "Concierto de Rock", EventDate = new DateTime(2025, 12, 31, 20, 0, 0, DateTimeKind.Utc), Venue = "Estadio Municipal", Status = "Active" }
+        );
 
-// para crear 1 evento con 2 sectores
-        // modelBuilder.Entity<Event>().HasData(new Event("Concierto de Rock", DateTime.Now.AddDays(30), "Estadio Municipal") 
-        // { 
-        //     Id = 1, 
-        //     Status = "Active" 
-        // });
+        // 2. Crear los Sectores (VIP y General)
+        var vipSectorId = 1;
+        var generalSectorId = 2;
+        
+        modelBuilder.Entity<Sector>().HasData(
+            new { Id = vipSectorId, EventId = eventId, Name = "VIP", Price = 5000m },
+            new { Id = generalSectorId, EventId = eventId, Name = "General", Price = 2000m }
+        );
 
-        // // 2. Definir Sectores (2 sectores de 50 butacas cada uno)
-        // modelBuilder.Entity<Sector>().HasData(
-        //     new { Id = 1, EventId = 1, Name = "Vip", Price = 5000m, Capacity = 50 },
-        //     new { Id = 2, EventId = 1, Name = "General", Price = 2000m, Capacity = 50 }
-        // );
+        // 3. Crear 50 butacas para cada sector usando objetos anónimos y Guids deterministas
+        var seats = new List<object>();
+        for (int i = 1; i <= 50; i++)
+        {
+            // Guids que siempre serán los mismos en cada compilación gracias al formato
+            seats.Add(new { Id = new Guid($"11111111-1111-1111-1111-{i:D12}"), Number = i, Row = "V", SectorId = vipSectorId, Status = SeatStatus.Available });
+            seats.Add(new { Id = new Guid($"22222222-2222-2222-2222-{i:D12}"), Number = i, Row = "G", SectorId = generalSectorId, Status = SeatStatus.Available });
+        }
+        
+        modelBuilder.Entity<Seat>().HasData(seats.ToArray());
 
 
 

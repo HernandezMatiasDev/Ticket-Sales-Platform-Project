@@ -38,10 +38,10 @@ async function obtenerEventos()
                 <div class="card-body text-center">
                     <h3 class="card-title text-primary">${evento.name}</h3>
                     <p class="badge bg-secondary">${evento.venue}</p>
-                    <p class="text-muted"><i class="bi bi-calendar"></i> ${new Date(evento.date).toLocaleDateString()}</p>
+                    <p class="text-muted"><i class="bi bi-calendar"></i> ${new Date(evento.eventDate || evento.date).toLocaleDateString()}</p>
                 </div>
                 <div class="card-footer bg-white border-0">
-                    <button class="btn btn-success w-100 rounded-pill" onclick="mostrarDetalles('${evento.name}')">
+                    <button class="btn btn-success w-100 rounded-pill" onclick="mostrarDetalles(${evento.id}, '${evento.name.replace(/'/g, "\\'")}')">
                         Reservar Entradas
                     </button>
                 </div>
@@ -67,8 +67,54 @@ async function obtenerEventos()
     }
 }
 
-function mostrarDetalles(nombre) {
-    alert("¡Has seleccionado: " + nombre + "! \nAquí es donde JavaScript pedirá los asientos a la API en el siguiente paso.");
+let currentEventId = null;
+
+function mostrarDetalles(id, nombre) {
+    currentEventId = id;
+    document.getElementById('seatMapModalLabel').innerText = `Asientos para: ${nombre}`;
+    document.getElementById('sectorSelect').value = "1"; // Por defecto cargar VIP
+    cargarAsientos(id, 1);
+    
+    const modal = new bootstrap.Modal(document.getElementById('seatMapModal'));
+    modal.show();
+}
+
+document.getElementById('sectorSelect')?.addEventListener('change', (e) => {
+    if (currentEventId) {
+        cargarAsientos(currentEventId, e.target.value);
+    }
+});
+
+async function cargarAsientos(eventId, sectorId) {
+    const contenedorAsientos = document.getElementById('contenedor-asientos');
+    contenedorAsientos.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>';
+    
+    try {
+        const res = await fetch(`${API_URL}/${eventId}/sectors/${sectorId}/seats`);
+        if (!res.ok) throw new Error("Error al cargar los asientos");
+        
+        const asientos = await res.json();
+        
+        if (asientos.length === 0) {
+            contenedorAsientos.innerHTML = '<p class="text-muted">No hay asientos configurados en este sector.</p>';
+            return;
+        }
+
+        let html = '<div class="d-flex flex-wrap gap-2 justify-content-center">';
+        asientos.forEach(a => {
+            // status: 0 = Available, 1 = Reserved, 2 = Sold
+            let colorClass = a.status === 0 ? 'btn-outline-success' : (a.status === 1 ? 'btn-warning' : 'btn-danger');
+            let disabled = a.status !== 0 ? 'disabled' : '';
+            
+            html += `<button class="btn ${colorClass}" ${disabled} onclick="reservarAsiento(${eventId}, '${a.id}')" title="Fila: ${a.row || '-'}">
+                        ${a.number}
+                     </button>`;
+        });
+        html += '</div>';
+        contenedorAsientos.innerHTML = html;
+    } catch (error) {
+        contenedorAsientos.innerHTML = `<p class="text-danger">Hubo un error al cargar el mapa de asientos.</p>`;
+    }
 }
 
 // === Lógica de Autenticación ===
@@ -166,6 +212,39 @@ function cerrarSesion() {
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user_email');
     actualizarUI();
+}
+
+async function reservarAsiento(eventId, seatId) {
+    const token = localStorage.getItem('jwt_token');
+    if (!token) {
+        alert("Debes iniciar sesión para realizar una reserva.");
+        const seatModal = bootstrap.Modal.getInstance(document.getElementById('seatMapModal'));
+        if (seatModal) seatModal.hide();
+        
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://localhost:5029/api/v1/events/${eventId}/seats/${seatId}/reservations`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+            alert("¡Reserva exitosa! Tienes 5 minutos para confirmar el pago.");
+            const sectorId = document.getElementById('sectorSelect').value;
+            cargarAsientos(eventId, sectorId); // Refrescar el mapa para que se desactive el botón
+        } else {
+            alert("Error al reservar: " + (data.error || "La butaca no está disponible."));
+        }
+    } catch (e) {
+        alert("Error de conexión al procesar la reserva.");
+    }
 }
 
 // Llamamos a la función
