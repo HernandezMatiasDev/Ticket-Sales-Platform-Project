@@ -58,17 +58,15 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>(); // NOTA: La implementación SeatRepository.cs no fue provista, pero debe ser creada y registrada.
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<ISectorRepository, SectorRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
 // 4. Unidad de Trabajo (Unit of Work)
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // 5. Registro de Casos de Uso y Queries (Capa de Aplicación)
-builder.Services.AddScoped<GetEventsQuery>();
-builder.Services.AddScoped<GetSeatMapQuery>();
-builder.Services.AddScoped<ReserveSeatUseCase>();
 builder.Services.AddScoped<ICommandHandler<CreateEventCommand, int>, CreateEventHandler>();
-// 5. Registro de Casos de Uso y Queries
+builder.Services.AddScoped<ICommandHandler<ReserveSeatCommand, Reservation>, ReserveSeatHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventsQuery, IEnumerable<Event>>, GetEventsHandler>();
 builder.Services.AddScoped<IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>>, GetSeatMapHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>>, GetEventSectorsHandler>();

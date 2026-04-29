@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using TicketingSystem.Application.UseCases.Handlers;
 using TicketingSystem.Application.UseCases.Commands;
 using TicketingSystem.Application.UseCases.Queries;
+using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Domain.Entities;
 
 namespace TicketingSystem.Api.Controllers;
 
@@ -9,22 +11,25 @@ namespace TicketingSystem.Api.Controllers;
 [Route("api/[controller]")]
 public class EventsController : ControllerBase
 {
-// Cambia esto en el constructor y en las variables privadas:
-private readonly TicketingSystem.Application.UseCases.Queries.GetEventsQuery _getEventsQuery;
-private readonly TicketingSystem.Application.UseCases.Queries.GetSeatMapQuery _getSeatMapQuery;
-    public EventsController(GetEventsQuery getEventsQuery, GetSeatMapQuery getSeatMapQuery)
+    private readonly IQueryHandler<GetEventsQuery, IEnumerable<Event>> _getEventsHandler;
+    private readonly IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>> _getSeatMapHandler;
+    private readonly ICommandHandler<CreateEventCommand, int> _createEventHandler;
+
+    public EventsController(
+        IQueryHandler<GetEventsQuery, IEnumerable<Event>> getEventsHandler, 
+        IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>> getSeatMapHandler,
+        ICommandHandler<CreateEventCommand, int> createEventHandler)
     {
-        _getEventsQuery = getEventsQuery;
-        _getSeatMapQuery = getSeatMapQuery;
+        _getEventsHandler = getEventsHandler;
+        _getSeatMapHandler = getSeatMapHandler;
+        _createEventHandler = createEventHandler;
     }
 
-    
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateEventCommand command, [FromServices] CreateEventHandler handler)
+    public async Task<IActionResult> Create([FromBody] CreateEventCommand command)
     {
-        var eventId = await handler.HandleAsync(command);
+        var eventId = await _createEventHandler.HandleAsync(command);
         
-        // Devolvemos un 201 Created según el estándar REST
         return CreatedAtAction(nameof(GetAll), new { id = eventId }, new { id = eventId, message = "Evento creado con éxito" });
     }   
 
@@ -32,7 +37,7 @@ private readonly TicketingSystem.Application.UseCases.Queries.GetSeatMapQuery _g
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var events = await _getEventsQuery.ExecuteAsync();
+        var events = await _getEventsHandler.HandleAsync(new GetEventsQuery());
         return Ok(events);
     }
 
@@ -40,9 +45,9 @@ private readonly TicketingSystem.Application.UseCases.Queries.GetSeatMapQuery _g
     [HttpGet("{eventId}/sectors/{sectorId}/seats")]
     public async Task<IActionResult> GetSeatMap(int eventId, int sectorId)
     {
-        var seatMap = await _getSeatMapQuery.ExecuteAsync(eventId, sectorId);
+        var seatMap = await _getSeatMapHandler.HandleAsync(new GetSeatMapQuery(sectorId));
         
-        if (seatMap == null) return NotFound("Evento o Sector no encontrado.");
+        if (seatMap == null || !seatMap.Any()) return NotFound("Evento o Sector no encontrado.");
         
         return Ok(seatMap);
     }

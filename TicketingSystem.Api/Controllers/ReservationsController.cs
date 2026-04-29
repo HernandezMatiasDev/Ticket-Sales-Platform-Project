@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TicketingSystem.Application.UseCases;
+using TicketingSystem.Application.UseCases.Commands;
+using TicketingSystem.Application.Interfaces;
+using TicketingSystem.Domain.Entities;
+using TicketingSystem.Application.UseCases.Handlers;
 
 namespace TicketingSystem.Api.Controllers
 {
@@ -17,15 +20,14 @@ namespace TicketingSystem.Api.Controllers
     [Route("api/v1/events/{eventId}/seats/{seatId}/reservations")]
     public class ReservationsController : ControllerBase
     {
-        private readonly ReserveSeatUseCase _reserveSeatUseCase;
+        private readonly ICommandHandler<ReserveSeatCommand, Reservation> _reserveSeatHandler;
 
-        // Inyectamos el Caso de Uso de la capa Application
         /// <summary>
-        /// Inicializa el controlador inyectando el caso de uso correspondiente.
+        /// Inicializa el controlador inyectando el handler correspondiente.
         /// </summary>
-        public ReservationsController(ReserveSeatUseCase reserveSeatUseCase)
+        public ReservationsController(ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler)
         {
-            _reserveSeatUseCase = reserveSeatUseCase;
+            _reserveSeatHandler = reserveSeatHandler;
         }
 
         /// <summary>
@@ -33,10 +35,9 @@ namespace TicketingSystem.Api.Controllers
         /// </summary>
         /// <param name="eventId">El identificador único del evento.</param>
         /// <param name="seatId">El identificador único de la butaca.</param>
-        /// <param name="request">El cuerpo de la petición que incluye los datos del usuario.</param>
         /// <returns>El resultado de la operación (200 OK, 400 Bad Request o 409 Conflict).</returns>
         [HttpPost]
-        public async Task<IActionResult> Reserve(int eventId, Guid seatId, [FromBody] ReserveRequestDto request)
+        public async Task<IActionResult> Reserve(int eventId, Guid seatId)
         {
             try
             {
@@ -47,8 +48,8 @@ namespace TicketingSystem.Api.Controllers
                     return Unauthorized(new { error = "El token es inválido o no contiene un identificador de usuario válido." });
                 }
 
-                // Ejecutamos la transacción
-                var reservation = await _reserveSeatUseCase.ExecuteAsync(userId, eventId, seatId);
+                var command = new ReserveSeatCommand(eventId, seatId, userId);
+                var reservation = await _reserveSeatHandler.HandleAsync(command);
                 
                 // 200 OK (o 201 Created) si todo fue un éxito
                 return Ok(new 
@@ -75,14 +76,5 @@ namespace TicketingSystem.Api.Controllers
                 return StatusCode(500, new { error = "Ocurrió un error inesperado al procesar la reserva." });
             }
         }
-    }
-
-    /// <summary>
-    /// DTO (Data Transfer Object) para recibir los datos del cuerpo de la solicitud de reserva.
-    /// </summary>
-    public class ReserveRequestDto
-    {
-        // Actualmente vacío ya que el UserId se toma de forma segura del JWT.
-        // Se mantiene la clase lista por si necesitas recibir datos adicionales en el payload de reserva.
     }
 }

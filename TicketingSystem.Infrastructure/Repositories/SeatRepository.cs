@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Domain.Entities;
@@ -23,6 +25,13 @@ namespace TicketingSystem.Infrastructure.Repositories
             return await _context.Seats
                 .Include(s => s.Sector)
                 .FirstOrDefaultAsync(s => s.Id == seatId);
+        }
+
+        public async Task<IEnumerable<Seat>> GetBySectorIdAsync(int sectorId)
+        {
+            return await _context.Seats
+                .Where(s => s.SectorId == sectorId)
+                .ToListAsync();
         }
 
         public Task UpdateAsync(Seat seat)
