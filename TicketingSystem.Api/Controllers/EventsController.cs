@@ -39,7 +39,10 @@ public class EventsController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var events = await _getEventsHandler.HandleAsync(new GetEventsQuery());
-        return Ok(events);
+        
+        // Mapeamos las entidades Event de dominio hacia EventDto para el cliente
+        var eventDtos = events.Select(e => new EventDto(e.Id, e.Name, e.EventDate, e.Venue));
+        return Ok(eventDtos);
     }
 
     // GET: api/events/{eventId}/sectors/{sectorId}/seats
@@ -50,6 +53,8 @@ public class EventsController : ControllerBase
         
         if (seatMap == null || !seatMap.Any()) return NotFound("Evento o Sector no encontrado.");
         
-        return Ok(seatMap);
+        // Mapeamos Seat a SeatMapDto y casteamos el Enum SeatStatus a int (0, 1, 2)
+        var seatDtos = seatMap.Select(s => new SeatMapDto(s.Id, s.Number, s.Row, (int)s.Status));
+        return Ok(seatDtos);
     }
 }
