@@ -30,7 +30,8 @@ public class EventsController : ControllerBase
     {
         var eventId = await _createEventHandler.HandleAsync(command);
         
-        return CreatedAtAction(nameof(GetAll), new { id = eventId }, new { id = eventId, message = "Evento creado con éxito" });
+        // Se retorna 201 Created con la URL correcta
+        return Created($"/api/events/{eventId}", new { id = eventId, message = "Evento creado con éxito" });
     }   
 
     // GET: api/events

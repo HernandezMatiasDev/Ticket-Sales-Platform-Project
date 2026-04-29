@@ -19,12 +19,12 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] AuthRequest request)
     {
-        var result = await _authService.RegisterAsync(request.Email, request.Password);
-        if (result)
+        var (succeeded, errors) = await _authService.RegisterAsync(request.Email, request.Password);
+        if (succeeded)
         {
-            return Ok(new { message = "Usuario registrado exitosamente." });
+            return Created(string.Empty, new { message = "Usuario registrado exitosamente." });
         }
-        return BadRequest(new { error = "No se pudo registrar el usuario. Comprueba que la contraseña cumpla los requisitos." });
+        return BadRequest(new { errors = errors });
     }
 
     [HttpPost("login")]

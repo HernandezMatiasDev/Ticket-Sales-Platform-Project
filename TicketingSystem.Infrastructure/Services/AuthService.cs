@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,11 +35,15 @@ public class AuthService : IAuthService
         return GenerateJwtToken(user);
     }
 
-    public async Task<bool> RegisterAsync(string email, string password)
+    public async Task<(bool Succeeded, IEnumerable<string> Errors)> RegisterAsync(string email, string password)
     {
         var user = new ApplicationUser { UserName = email, Email = email };
         var result = await _userManager.CreateAsync(user, password);
-        return result.Succeeded;
+        if (result.Succeeded)
+        {
+            return (true, Enumerable.Empty<string>());
+        }
+        return (false, result.Errors.Select(e => e.Description));
     }
 
     private string GenerateJwtToken(ApplicationUser user)

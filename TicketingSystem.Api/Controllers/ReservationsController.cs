@@ -51,8 +51,8 @@ namespace TicketingSystem.Api.Controllers
                 var command = new ReserveSeatCommand(eventId, seatId, userId);
                 var reservation = await _reserveSeatHandler.HandleAsync(command);
                 
-                // 200 OK (o 201 Created) si todo fue un éxito
-                return Ok(new 
+                // 201 Created si todo fue un éxito
+                return Created(string.Empty, new 
                 { 
                     message = "Reserva exitosa", 
                     reservationId = reservation.Id, 
