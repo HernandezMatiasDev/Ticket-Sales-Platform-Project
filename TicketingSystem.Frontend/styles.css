@@ -1,6 +1,13 @@
 /* El fondo y colores base */
 body {
-    background-color: #2A363A !important; 
+    background-image: 
+    linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7)),
+     url('images/event-image.jpg');
+
+    background-size: cover;       /* ocupa todo el fondo */
+    background-repeat: no-repeat; 
+    background-position: center;  
+    min-height: 100vh;
     color: white;
 }
 
@@ -13,9 +20,9 @@ body {
 }
 .card-general-title
 {
-    letter-spacing: 4px;
+    letter-spacing: 5px;
     font-family: "Tahoma";
-    font-style: bold !important;
+    font-weight: bold !important;
 }
 
 /* LA TARJETA (Solo para los eventos individuales) */
@@ -47,8 +54,11 @@ body {
 {
     color: #111 !important;
     font-family: "Tahoma" !important;
-    font-size: bold !important;
+    font-weight: bold !important;
     background-color: #E84A5F !important;
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
 }
 
 .badge
