@@ -32,16 +32,16 @@ async function obtenerEventos()
     const card = `
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow border-0">
-                <div class="card-header bg-dark text-white">
-                    <small class="text-uppercase">Evento Próximo</small>
+                <div class="card-header  text-black">
+                    <small class="text-uppercase card-header">Evento Próximo</small>
                 </div>
                 <div class="card-body text-center">
                     <h3 class="card-title text-primary">${evento.name}</h3>
-                    <p class="badge bg-secondary">${evento.venue}</p>
+                    <p class="badge">${evento.venue}</p>
                     <p class="text-muted"><i class="bi bi-calendar"></i> ${new Date(evento.eventDate || evento.date).toLocaleDateString()}</p>
                 </div>
-                <div class="card-footer bg-white border-0">
-                    <button class="btn btn-success w-100 rounded-pill" onclick="mostrarDetalles(${evento.id}, '${evento.name.replace(/'/g, "\\'")}')">
+                <div class="card-footer border-0">
+                    <button class="btn w-100 " onclick="mostrarDetalles(${evento.id}, '${evento.name.replace(/'/g, "\\'")}')">
                         Reservar Entradas
                     </button>
                 </div>

@@ -1,0 +1,116 @@
+/* El fondo y colores base */
+body {
+    background-color: #2A363A !important; 
+    color: white;
+}
+
+/* El contenedor de la sección de eventos */
+.main-content-wrapper {
+    background-color: #1b263b; /* Un tono ligeramente distinto al fondo para dar profundidad */
+    border-radius: 15px;
+    max-width: 900px; /* Aquí controlas qué tan ancho quieres el bloque central */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.card-general-title
+{
+    letter-spacing: 4px;
+    font-family: "Tahoma";
+    font-style: bold !important;
+}
+
+/* LA TARJETA (Solo para los eventos individuales) */
+/* Quitamos el max-width de aquí para que las columnas de Bootstrap manejen el tamaño */
+.card {
+    background-color: #f9c; 
+    color: white;
+    border: none;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.navbar {
+    background-color: #E84A5F ;
+    letter-spacing: 4px;
+    font-weight: bold;
+}
+
+/* Ajuste para que el texto de los eventos se vea bien sobre el salmón */
+.card-title, .text-muted, .bi-calendar, .navbar {
+    color: #111 !important;
+    font-family: "Sekuya";
+     font-weight: bold;
+}
+.card-header
+{
+    color: #111 !important;
+    font-family: "Tahoma" !important;
+    font-size: bold !important;
+    background-color: #E84A5F !important;
+}
+
+.badge
+{
+    color: #111;
+    font-size: 1em;
+}
+
+
+.card-footer
+{
+    background-color: transparent !important;
+}
+
+
+.btn {  
+  color: #eee;
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 0.7em 2em;
+  background-color: #28b;
+  font-family: tahoma;
+  outline-color: #000;
+
+  border-radius: 0;
+  transition: border 0.2s, border-radius 0.3s,
+  background-color 0.24s;
+}
+
+
+
+.btn:focus, .btn:hover, .btn-success:focus, .btn-success:hover {
+  outline: solid 2px #000;
+  border: solid 1px transparent !important;
+  background-color: #4cf;
+  color: #111 !important;
+  border-radius: 15px !important;
+  box-shadow: none;
+}
+.btn:active{
+  box-shadow: none !important;
+  background-color: #28b !important;
+}
+
+
+
+
+
+
+
+.modal-content {
+    background-color: #1b263b;
+    color: white;
+}
+
+.form-control, .form-select {
+    background-color: #415a77;
+    border: none;
+    color: white;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #778da9;
+    color: white;
+}
