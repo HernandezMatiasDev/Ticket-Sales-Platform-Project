@@ -49,8 +49,8 @@ public class TicketingDbContext : IdentityDbContext<ApplicationUser, IdentityRol
         for (int i = 1; i <= 50; i++)
         {
             // Guids que siempre serán los mismos en cada compilación gracias al formato
-            seats.Add(new { Id = new Guid($"11111111-1111-1111-1111-{i:D12}"), Number = i, Row = "V", SectorId = vipSectorId, Status = SeatStatus.Available });
-            seats.Add(new { Id = new Guid($"22222222-2222-2222-2222-{i:D12}"), Number = i, Row = "G", SectorId = generalSectorId, Status = SeatStatus.Available });
+            seats.Add(new { Id = new Guid($"11111111-1111-1111-1111-{i:D12}"), Number = i, Row = "V", SectorId = vipSectorId, Status = SeatStatus.Available, Version = 1 });
+            seats.Add(new { Id = new Guid($"22222222-2222-2222-2222-{i:D12}"), Number = i, Row = "G", SectorId = generalSectorId, Status = SeatStatus.Available, Version = 1 });
         }
         
         modelBuilder.Entity<Seat>().HasData(seats.ToArray());

@@ -20,6 +20,8 @@ public class Seat
 
     public Sector Sector { get; private set; } = null!;
 
+    public int Version { get; private set; } = 1;
+
     private Seat() { }
 
     public Seat(int number, int sectorId)
@@ -31,15 +33,18 @@ public class Seat
     public void Reserve()
     {
         Status = SeatStatus.Reserved;
+        Version++; // Incrementamos la versión para la concurrencia
     }
 
     public void MakeAvailable()
     {
         Status = SeatStatus.Available;
+        Version++;
     }
 
     public void Sell()
     {
         Status = SeatStatus.Sold;
+        Version++;
     }
 }

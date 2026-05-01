@@ -12,5 +12,8 @@ public class SeatConfiguration : IEntityTypeConfiguration<Seat>
         
         builder.Property(s => s.Number).IsRequired();
         builder.Property(s => s.Row).HasMaxLength(10);
+
+        // Configuramos Version como Token de Concurrencia para manejar la concurrencia optimista
+        builder.Property(s => s.Version).IsConcurrencyToken();
     }
 }
