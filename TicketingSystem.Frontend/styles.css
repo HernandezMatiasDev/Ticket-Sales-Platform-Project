@@ -124,3 +124,45 @@ body {
     background-color: #778da9;
     color: white;
 }
+
+/* Mapa de asientos fijo y con scroll */
+.seat-map-wrapper {
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.seat-map {
+    display: grid;
+    grid-template-columns: repeat(10, 45px); /* Cantidad fija de 10 asientos por fila */
+    gap: 10px;
+    width: max-content;
+    margin: 0 auto; /* Centrar el grid si la pantalla es más ancha */
+}
+
+.seat-btn {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    border-radius: 8px !important;
+    letter-spacing: normal;
+}
+
+/* Indicador de Escenario */
+.stage-indicator {
+    background-color: #E84A5F;
+    color: #111;
+    font-family: "Tahoma", sans-serif;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px;
+    width: 80%;
+    min-width: 300px;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2); /* Pequeño efecto 3D */
+}

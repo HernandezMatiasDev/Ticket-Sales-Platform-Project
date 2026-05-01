@@ -276,6 +276,10 @@ namespace TicketingSystem.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SectorId");
@@ -289,7 +293,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 1,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -297,7 +302,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 1,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -305,7 +311,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 2,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -313,7 +320,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 2,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -321,7 +329,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 3,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -329,7 +338,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 3,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -337,7 +347,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 4,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -345,7 +356,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 4,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -353,7 +365,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 5,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -361,7 +374,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 5,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -369,7 +383,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 6,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -377,7 +392,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 6,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -385,7 +401,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 7,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -393,7 +410,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 7,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -401,7 +419,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 8,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -409,7 +428,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 8,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -417,7 +437,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 9,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -425,7 +446,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 9,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -433,7 +455,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 10,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -441,7 +464,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 10,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -449,7 +473,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 11,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -457,7 +482,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 11,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -465,7 +491,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 12,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -473,7 +500,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 12,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -481,7 +509,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 13,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -489,7 +518,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 13,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -497,7 +527,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 14,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -505,7 +536,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 14,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -513,7 +545,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 15,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -521,7 +554,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 15,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -529,7 +563,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 16,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -537,7 +572,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 16,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -545,7 +581,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 17,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -553,7 +590,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 17,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -561,7 +599,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 18,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -569,7 +608,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 18,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -577,7 +617,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 19,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -585,7 +626,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 19,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -593,7 +635,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 20,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -601,7 +644,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 20,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -609,7 +653,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 21,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -617,7 +662,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 21,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -625,7 +671,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 22,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -633,7 +680,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 22,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -641,7 +689,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 23,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -649,7 +698,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 23,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -657,7 +707,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 24,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -665,7 +716,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 24,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -673,7 +725,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 25,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -681,7 +734,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 25,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -689,7 +743,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 26,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -697,7 +752,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 26,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -705,7 +761,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 27,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -713,7 +770,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 27,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -721,7 +779,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 28,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -729,7 +788,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 28,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -737,7 +797,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 29,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -745,7 +806,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 29,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -753,7 +815,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 30,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -761,7 +824,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 30,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -769,7 +833,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 31,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -777,7 +842,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 31,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -785,7 +851,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 32,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -793,7 +860,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 32,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -801,7 +869,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 33,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -809,7 +878,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 33,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -817,7 +887,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 34,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -825,7 +896,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 34,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -833,7 +905,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 35,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -841,7 +914,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 35,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -849,7 +923,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 36,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -857,7 +932,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 36,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -865,7 +941,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 37,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -873,7 +950,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 37,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -881,7 +959,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 38,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -889,7 +968,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 38,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -897,7 +977,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 39,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -905,7 +986,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 39,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -913,7 +995,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 40,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -921,7 +1004,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 40,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -929,7 +1013,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 41,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -937,7 +1022,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 41,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -945,7 +1031,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 42,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -953,7 +1040,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 42,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -961,7 +1049,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 43,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -969,7 +1058,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 43,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -977,7 +1067,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 44,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -985,7 +1076,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 44,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -993,7 +1085,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 45,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1001,7 +1094,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 45,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1009,7 +1103,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 46,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1017,7 +1112,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 46,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1025,7 +1121,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 47,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1033,7 +1130,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 47,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1041,7 +1139,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 48,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1049,7 +1148,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 48,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1057,7 +1157,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 49,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1065,7 +1166,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 49,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1073,7 +1175,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 50,
                             Row = "V",
                             SectorId = 1,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         },
                         new
                         {
@@ -1081,7 +1184,8 @@ namespace TicketingSystem.Infrastructure.Migrations
                             Number = 50,
                             Row = "G",
                             SectorId = 2,
-                            Status = 0
+                            Status = 0,
+                            Version = 1
                         });
                 });
 

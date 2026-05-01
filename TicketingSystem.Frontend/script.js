@@ -100,17 +100,19 @@ async function cargarAsientos(eventId, sectorId) {
             return;
         }
 
-        let html = '<div class="d-flex flex-wrap gap-2 justify-content-center">';
+        let html = '<div class="seat-map-wrapper">';
+        html += '<div class="stage-indicator">ESCENARIO</div>';
+        html += '<div class="seat-map">';
         asientos.forEach(a => {
             // status: 0 = Available, 1 = Reserved, 2 = Sold
             let colorClass = a.status === 0 ? 'btn-outline-success' : (a.status === 1 ? 'btn-warning' : 'btn-danger');
             let disabled = a.status !== 0 ? 'disabled' : '';
             
-            html += `<button class="btn ${colorClass}" ${disabled} onclick="reservarAsiento(${eventId}, '${a.id}')" title="Fila: ${a.row || '-'}">
+            html += `<button class="btn ${colorClass} seat-btn" ${disabled} onclick="reservarAsiento(${eventId}, '${a.id}')" title="Fila: ${a.row || '-'}, Asiento: ${a.number}">
                         ${a.number}
                      </button>`;
         });
-        html += '</div>';
+        html += '</div></div>';
         contenedorAsientos.innerHTML = html;
     } catch (error) {
         contenedorAsientos.innerHTML = `<p class="text-danger">Hubo un error al cargar el mapa de asientos.</p>`;
