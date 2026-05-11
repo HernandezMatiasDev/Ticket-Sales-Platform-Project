@@ -18,6 +18,13 @@ namespace TicketingSystem.Application.Interfaces
         Task AddAsync(Reservation reservation);
 
         /// <summary>
+        /// Obtiene una reserva por su identificador único.
+        /// </summary>
+        /// <param name="id">El identificador de la reserva.</param>
+        /// <returns>La reserva encontrada o null si no existe.</returns>
+        Task<Reservation?> GetByIdAsync(Guid id);
+
+        /// <summary>
         /// Obtiene todas las reservas que siguen en estado pendiente pero cuyo
         /// tiempo de expiración ya ha sido superado.
         /// </summary>

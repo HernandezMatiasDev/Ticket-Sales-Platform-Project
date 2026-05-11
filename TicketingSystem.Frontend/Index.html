@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="styles.css"></head>
 <body class="custom-bg">
 
+    <!-- Contenedor del temporizador flotante -->
+    <div id="timer-container" class="d-none">
+        Tiempo restante para confirmar pago: <span id="timer-text">05:00</span>
+    </div>
+
     <nav class="navbar   mb-4">
         <div class="container">
             <span class="navbar-brand">Ticket Sales Platform</span>
@@ -103,6 +108,22 @@
                     <div id="contenedor-asientos" class="text-center p-3 bg-light border rounded">
                         <!-- Asientos cargados dinámicamente -->
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Pago -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel">Confirmar Pago</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Reserva confirmada. Tienes 5 minutos para pagar.</p>
+                    <h3 class="text-success mb-4">Total a pagar: $2000</h3>
+                    <button class="btn btn-success w-100" onclick="procesarPago()">Simular Pago</button>
                 </div>
             </div>
         </div>

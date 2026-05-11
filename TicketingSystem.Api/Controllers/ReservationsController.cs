@@ -21,13 +21,15 @@ namespace TicketingSystem.Api.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly ICommandHandler<ReserveSeatCommand, Reservation> _reserveSeatHandler;
+        private readonly ICommandHandler<ConfirmPaymentCommand, bool> _confirmPaymentHandler;
 
         /// <summary>
         /// Inicializa el controlador inyectando el handler correspondiente.
         /// </summary>
-        public ReservationsController(ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler)
+        public ReservationsController(ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler, ICommandHandler<ConfirmPaymentCommand, bool> confirmPaymentHandler)
         {
             _reserveSeatHandler = reserveSeatHandler;
+            _confirmPaymentHandler = confirmPaymentHandler;
         }
 
         /// <summary>
@@ -74,6 +76,35 @@ namespace TicketingSystem.Api.Controllers
             {
                 // 500 Internal Server Error para cualquier otra falla imprevista
                 return StatusCode(500, new { error = "Ocurrió un error inesperado al procesar la reserva." });
+            }
+        }
+
+        /// <summary>
+        /// Simula la confirmación de un pago para una reserva activa.
+        /// </summary>
+        [HttpPost("{reservationId}/pay")]
+        public async Task<IActionResult> Pay(int eventId, Guid seatId, Guid reservationId)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+                {
+                    return Unauthorized(new { error = "El token es inválido." });
+                }
+
+                var command = new ConfirmPaymentCommand(reservationId, userId);
+                await _confirmPaymentHandler.HandleAsync(command);
+                
+                return Ok(new { message = "Pago confirmado exitosamente." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error al procesar el pago." });
             }
         }
     }

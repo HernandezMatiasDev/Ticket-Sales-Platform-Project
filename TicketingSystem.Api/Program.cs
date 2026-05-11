@@ -67,6 +67,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // 5. Registro de Casos de Uso y Queries (Capa de Aplicación)
 builder.Services.AddScoped<ICommandHandler<CreateEventCommand, int>, CreateEventHandler>();
 builder.Services.AddScoped<ICommandHandler<ReserveSeatCommand, Reservation>, ReserveSeatHandler>();
+builder.Services.AddScoped<ICommandHandler<ConfirmPaymentCommand, bool>, ConfirmPaymentHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventsQuery, IEnumerable<Event>>, GetEventsHandler>();
 builder.Services.AddScoped<IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>>, GetSeatMapHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>>, GetEventSectorsHandler>();

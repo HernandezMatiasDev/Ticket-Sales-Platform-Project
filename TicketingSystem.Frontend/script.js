@@ -68,6 +68,8 @@ async function obtenerEventos()
 }
 
 let currentEventId = null;
+let currentReservationId = null;
+let currentSeatId = null;
 
 function mostrarDetalles(id, nombre) {
     currentEventId = id;
@@ -216,6 +218,30 @@ function cerrarSesion() {
     actualizarUI();
 }
 
+let timerInterval = null;
+
+function iniciarTemporizador() {
+    clearInterval(timerInterval); // Limpiar cualquier temporizador previo
+    const timerContainer = document.getElementById('timer-container');
+    const timerText = document.getElementById('timer-text');
+    timerContainer.classList.remove('d-none');
+    
+    let tiempoRestante = 300; // 5 minutos en segundos
+    
+    timerInterval = setInterval(() => {
+        const minutos = String(Math.floor(tiempoRestante / 60)).padStart(2, '0');
+        const segundos = String(tiempoRestante % 60).padStart(2, '0');
+        timerText.textContent = `${minutos}:${segundos}`;
+        
+        if (tiempoRestante <= 0) {
+            clearInterval(timerInterval);
+            timerContainer.classList.add('d-none');
+            alert("El tiempo de reserva ha expirado. Si aún deseas la entrada, intenta realizar la reserva nuevamente.");
+        }
+        tiempoRestante--;
+    }, 1000);
+}
+
 async function reservarAsiento(eventId, seatId) {
     const token = localStorage.getItem('jwt_token');
     if (!token) {
@@ -238,14 +264,59 @@ async function reservarAsiento(eventId, seatId) {
         const data = await res.json();
         
         if (res.ok) {
-            alert("¡Reserva exitosa! Tienes 5 minutos para confirmar el pago.");
+            currentReservationId = data.reservationId;
+            currentSeatId = seatId;
             const sectorId = document.getElementById('sectorSelect').value;
-            cargarAsientos(eventId, sectorId); // Refrescar el mapa para que se desactive el botón
+            cargarAsientos(eventId, sectorId);
+            iniciarTemporizador();
+            
+            // Cierra modal de asientos y abre modal de pago
+            const seatModal = bootstrap.Modal.getInstance(document.getElementById('seatMapModal'));
+            if (seatModal) seatModal.hide();
+            
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            paymentModal.show();
         } else {
-            alert("Error al reservar: " + (data.error || "La butaca no está disponible."));
+            const errorMsg = data.error || "La butaca no está disponible.";
+            alert(`No se pudo realizar la reserva: ${errorMsg}\n\nEl mapa de asientos se actualizará para reflejar la disponibilidad más reciente.`);
+            const sectorId = document.getElementById('sectorSelect').value;
+            cargarAsientos(eventId, sectorId);
         }
     } catch (e) {
-        alert("Error de conexión al procesar la reserva.");
+        console.error("Detalle técnico del error:", e);
+        alert("Error crítico al procesar la petición. Presiona F12 y revisa la consola para ver el detalle exacto.");
+    }
+}
+
+async function procesarPago() {
+    const token = localStorage.getItem('jwt_token');
+    if (!token || !currentReservationId || !currentSeatId || !currentEventId) return;
+
+    try {
+        const res = await fetch(`http://localhost:5029/api/v1/events/${currentEventId}/seats/${currentSeatId}/reservations/${currentReservationId}/pay`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            clearInterval(timerInterval);
+            document.getElementById('timer-container').classList.add('d-none');
+            
+            const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+            if (paymentModal) paymentModal.hide();
+            
+            alert("¡Compra exitosa! Que disfrutes tu evento.");
+            const sectorId = document.getElementById('sectorSelect').value;
+            cargarAsientos(currentEventId, sectorId);
+        } else {
+            alert("No se pudo procesar el pago: " + (data.error || "Error desconocido."));
+        }
+    } catch (e) {
+        alert("Error de red al intentar procesar el pago.");
     }
 }
 

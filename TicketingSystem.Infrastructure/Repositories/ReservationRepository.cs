@@ -38,6 +38,16 @@ namespace TicketingSystem.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Obtiene una reserva por su identificador único.
+        /// </summary>
+        /// <param name="id">El identificador de la reserva.</param>
+        /// <returns>La reserva encontrada o null si no existe.</returns>
+        public async Task<Reservation?> GetByIdAsync(Guid id)
+        {
+            return await _context.Set<Reservation>().FindAsync(id);
+        }
+
+        /// <summary>
         /// Obtiene todas las reservas que están en estado pendiente y cuyo tiempo de expiración
         /// es menor o igual al tiempo actual proporcionado.
         /// </summary>
