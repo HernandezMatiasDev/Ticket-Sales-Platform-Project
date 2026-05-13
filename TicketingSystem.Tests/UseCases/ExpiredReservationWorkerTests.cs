@@ -83,7 +83,7 @@ namespace TicketingSystem.Tests.UseCases
             var executeAsyncMethod = typeof(ExpiredReservationWorker).GetMethod("ExecuteAsync", BindingFlags.NonPublic | BindingFlags.Instance);
             
             // Act - Interceptamos el TaskCanceledException que salta por el Task.Delay(..., cancellationToken)
-            var act = async () => await (Task)executeAsyncMethod!.Invoke(_worker, new object[] { cts.Token });
+            var act = async () => await (Task)(executeAsyncMethod!.Invoke(_worker, new object[] { cts.Token })!);
             await act.Should().ThrowAsync<TaskCanceledException>(); // Lanzado directamente por Task.Delay al cancelar el token
 
             // Assert

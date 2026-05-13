@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -39,18 +40,18 @@ namespace TicketingSystem.Tests.UseCases
         public async Task HandleAsync_ReservaInvalidaOPendiente_LanzaExcepcion()
         {
             // Arrange
-            var command = new ConfirmPaymentCommand(Guid.NewGuid(), 1);
+            var command = new ConfirmPaymentCommand(1);
             
             // Simulamos que el repositorio no encuentra la reserva
-            _reservationRepoMock.Setup(r => r.GetByIdAsync(command.ReservationId))
-                .ReturnsAsync((Reservation?)null);
+            _reservationRepoMock.Setup(r => r.GetPendingByUserIdAsync(command.UserId))
+                .ReturnsAsync(new List<Reservation>());
 
             // Act
             Func<Task> act = async () => await _handler.HandleAsync(command);
 
             // Assert
             await act.Should().ThrowAsync<InvalidOperationException>()
-                .WithMessage("La reserva es inválida, no te pertenece o ya no está pendiente.");
+                .WithMessage("No tienes reservas pendientes para pagar.");
             
             // Verificamos que se abrió la transacción, pero nunca se confirmó
             _unitOfWorkMock.Verify(u => u.BeginTransactionAsync(), Times.Once);
@@ -64,7 +65,7 @@ namespace TicketingSystem.Tests.UseCases
             var userId = 100;
             var seatId = Guid.NewGuid();
             var reservationId = Guid.NewGuid();
-            var command = new ConfirmPaymentCommand(reservationId, userId);
+            var command = new ConfirmPaymentCommand(userId);
 
             var reservation = new Reservation(reservationId, userId, seatId, DateTime.UtcNow, DateTime.UtcNow.AddMinutes(5));
             
@@ -74,7 +75,9 @@ namespace TicketingSystem.Tests.UseCases
             typeof(Seat).GetProperty("Sector")?.SetValue(seat, sector);
             seat.Reserve(); // Simulamos que estaba reservada previamente
 
-            _reservationRepoMock.Setup(r => r.GetByIdAsync(reservationId)).ReturnsAsync(reservation);
+            var pendingReservations = new List<Reservation> { reservation };
+
+            _reservationRepoMock.Setup(r => r.GetPendingByUserIdAsync(userId)).ReturnsAsync(pendingReservations);
             _seatRepoMock.Setup(s => s.GetByIdAsync(seatId)).ReturnsAsync(seat);
 
             // Act
