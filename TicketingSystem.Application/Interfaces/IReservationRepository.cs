@@ -25,6 +25,13 @@ namespace TicketingSystem.Application.Interfaces
         Task<Reservation?> GetByIdAsync(Guid id);
 
         /// <summary>
+        /// Obtiene todas las reservas en estado pendiente para un usuario.
+        /// </summary>
+        /// <param name="userId">El ID del usuario.</param>
+        /// <returns>Lista de reservas pendientes del usuario.</returns>
+        Task<IEnumerable<Reservation>> GetPendingByUserIdAsync(int userId);
+
+        /// <summary>
         /// Obtiene todas las reservas que siguen en estado pendiente pero cuyo
         /// tiempo de expiración ya ha sido superado.
         /// </summary>

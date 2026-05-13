@@ -71,7 +71,7 @@ public class TicketingDbContext : IdentityDbContext<ApplicationUser, IdentityRol
         // Configuraciones de tu compañero
         modelBuilder.ApplyConfiguration(new EventConfiguration());
         modelBuilder.ApplyConfiguration(new SectorConfiguration());
-        modelBuilder.ApplyConfiguration(new SeatConfiguration()); // ¡AQUÍ ES DONDE ÉL PONE EL CONCURRENCY TOKEN!
+        modelBuilder.ApplyConfiguration(new SeatConfiguration()); 
 
         // Tus configuraciones
         modelBuilder.ApplyConfiguration(new ReservationConfiguration());

@@ -68,19 +68,38 @@ async function obtenerEventos()
 }
 
 let currentEventId = null;
-let currentReservationId = null;
-let currentSeatId = null;
-let currentSeatNumber = null;
-let currentSeatRow = null;
-let currentSectorName = null;
 
 
-function mostrarDetalles(id, nombre) {
+async function mostrarDetalles(id, nombre) {
     currentEventId = id;
     document.getElementById('seatMapModalLabel').innerText = `Asientos para: ${nombre}`;
-    document.getElementById('sectorSelect').value = "1"; // Por defecto cargar VIP
-    cargarAsientos(id, 1);
     
+    const sectorSelect = document.getElementById('sectorSelect');
+    sectorSelect.innerHTML = '<option value="">Cargando sectores...</option>';
+
+    try {
+        const res = await fetch(`${API_URL}/${id}/sectors`);
+        if (!res.ok) throw new Error("Error al cargar los sectores");
+        
+        const sectores = await res.json();
+        sectorSelect.innerHTML = '';
+        
+        if (sectores.length > 0) {
+            sectores.forEach(sector => {
+                sectorSelect.innerHTML += `<option value="${sector.id}" data-price="${sector.price}">${sector.name}</option>`;
+            });
+            
+            // Cargar asientos del primer sector por defecto
+            cargarAsientos(id, sectorSelect.value);
+        } else {
+            sectorSelect.innerHTML = '<option value="">No hay sectores disponibles</option>';
+            document.getElementById('contenedor-asientos').innerHTML = '<p class="text-muted">No hay asientos disponibles.</p>';
+        }
+    } catch (error) {
+        console.error("Hubo un error cargando sectores:", error);
+        sectorSelect.innerHTML = '<option value="">Error al cargar sectores</option>';
+    }
+
     const modal = new bootstrap.Modal(document.getElementById('seatMapModal'));
     modal.show();
 }
@@ -118,13 +137,7 @@ async function cargarAsientos(eventId, sectorId) {
         <button 
             class="btn ${colorClass} seat-btn" 
             ${disabled}
-            onclick="reservarAsiento(
-                ${eventId},
-                '${a.id}',
-                '${a.number}',
-                '${a.row || '-'}',
-                '${document.getElementById('sectorSelect').selectedOptions[0].text}'
-            )"
+            onclick="reservarAsiento(${eventId}, '${a.id}')"
             title="Fila: ${a.row || '-'}, Asiento: ${a.number}"
         >
             ${a.number}
@@ -176,14 +189,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
             localStorage.setItem('jwt_token', data.token);
             localStorage.setItem('user_email', email);
             
-            // Cerrar modal exitosamente
-            const modalEl = document.getElementById('loginModal');
-            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-            modal.hide();
-            
-            actualizarUI();
-            document.getElementById('loginForm').reset();
-            msgDiv.classList.add('d-none');
+            window.location.reload();
         } else {
             msgDiv.classList.remove('d-none');
             msgDiv.className = 'alert alert-danger mb-3';
@@ -233,50 +239,10 @@ function cerrarSesion() {
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user_email');
     actualizarUI();
+    window.location.reload();
 }
 
-let timerInterval = null;
-
-function iniciarTemporizador() {
-    clearInterval(timerInterval); // Limpiar cualquier temporizador previo
-
-    const timerContainer = document.getElementById('timer-container');
-    const timerText = document.getElementById('timer-text');
-
-    timerContainer.classList.remove('d-none');
-    
-    timerContainer.style.cursor = 'pointer';
-
-        timerContainer.onclick = () => {
-        const paymentModal = new bootstrap.Modal(
-            document.getElementById('paymentModal')
-        );
-
-        paymentModal.show();
-    };
-
-    let tiempoRestante = 300; // 5 minutos en segundos
-    
-    timerInterval = setInterval(() => {
-        const minutos = String(Math.floor(tiempoRestante / 60)).padStart(2, '0');
-        const segundos = String(tiempoRestante % 60).padStart(2, '0');
-        timerText.textContent = `${minutos}:${segundos}`;
-        
-        if (tiempoRestante <= 0) {
-            clearInterval(timerInterval);
-            timerContainer.classList.add('d-none');
-            alert("El tiempo de reserva ha expirado. Si aún deseas la entrada, intenta realizar la reserva nuevamente.");
-        }
-        tiempoRestante--;
-    }, 1000);
-}
-
-async function reservarAsiento(eventId, seatId, seatNumber, seatRow, sectorName) {
-    currentSeatId = seatId;
-    currentSeatNumber = seatNumber;
-    currentSeatRow = seatRow;
-    currentSectorName = sectorName;
-
+async function reservarAsiento(eventId, seatId) {
     const token = localStorage.getItem('jwt_token');
     if (!token) {
         alert("Debes iniciar sesión para realizar una reserva.");
@@ -295,26 +261,28 @@ async function reservarAsiento(eventId, seatId, seatNumber, seatRow, sectorName)
                 'Authorization': `Bearer ${token}`
             }
         });
-        const data = await res.json();
         
-        if (res.ok) {
-            currentReservationId = data.reservationId;
-            currentSeatId = seatId;
-            const sectorId = document.getElementById('sectorSelect').value;
-            cargarAsientos(eventId, sectorId);
-            iniciarTemporizador();
+        if (res.status === 401) {
+            alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
+            cerrarSesion();
             
-            // Cierra modal de asientos y abre modal de pago
             const seatModal = bootstrap.Modal.getInstance(document.getElementById('seatMapModal'));
             if (seatModal) seatModal.hide();
             
-            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-
-            document.getElementById('payment-sector').textContent = currentSectorName;
-            document.getElementById('payment-row').textContent = currentSeatRow;
-            document.getElementById('payment-seat').textContent = currentSeatNumber;
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
             
-            paymentModal.show();
+            return;
+        }
+
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : {};
+        
+        if (res.ok) {
+            const selectElement = document.getElementById('sectorSelect');
+            const sectorId = selectElement.value;
+            cargarAsientos(eventId, sectorId);
+            cargarCarrito(); // Refrescar el carrito persistente
         } else {
             const errorMsg = data.error || "La butaca no está disponible.";
             alert(`No se pudo realizar la reserva: ${errorMsg}\n\nEl mapa de asientos se actualizará para reflejar la disponibilidad más reciente.`);
@@ -327,12 +295,102 @@ async function reservarAsiento(eventId, seatId, seatNumber, seatRow, sectorName)
     }
 }
 
-async function procesarPago() {
+let timerInterval = null;
+
+async function cargarCarrito() {
     const token = localStorage.getItem('jwt_token');
-    if (!token || !currentReservationId || !currentSeatId || !currentEventId) return;
+    const cartPanel = document.getElementById('cart-panel');
+    if (!token) {
+        cartPanel.classList.add('d-none');
+        clearInterval(timerInterval);
+        return;
+    }
 
     try {
-        const res = await fetch(`http://localhost:5029/api/v1/events/${currentEventId}/seats/${currentSeatId}/reservations/${currentReservationId}/pay`, {
+        const res = await fetch(`http://localhost:5029/api/v1/reservations/pending`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+            const reservas = await res.json();
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const timerContainer = document.getElementById('timer-container');
+            
+            if (reservas.length === 0) {
+                cartPanel.classList.add('d-none');
+                clearInterval(timerInterval);
+                return;
+            }
+
+            cartPanel.classList.remove('d-none');
+            timerContainer.classList.remove('d-none');
+            cartItems.innerHTML = '';
+            let total = 0;
+            let minExpiresAt = new Date(reservas[0].expiresAt.endsWith('Z') ? reservas[0].expiresAt : reservas[0].expiresAt + 'Z');
+
+            reservas.forEach(r => {
+                total += r.price;
+                const expDate = new Date(r.expiresAt.endsWith('Z') ? r.expiresAt : r.expiresAt + 'Z');
+                if (expDate < minExpiresAt) minExpiresAt = expDate;
+
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <strong>Sector:</strong> ${r.sectorName} <br>
+                        <strong>Fila:</strong> ${r.row} - <strong>Asiento:</strong> ${r.seatNumber} <br>
+                        <span class="text-success">$${r.price}</span>
+                    </div>
+                `;
+            });
+
+            cartTotal.innerText = `Total: $${total}`;
+            iniciarTemporizador(minExpiresAt);
+        }
+    } catch (e) {
+        console.error("Error cargando carrito:", e);
+    }
+}
+
+function iniciarTemporizador(expiresAt) {
+    clearInterval(timerInterval);
+    const timerText = document.getElementById('timer-text');
+    
+    timerInterval = setInterval(() => {
+        const now = new Date();
+        const diff = Math.floor((expiresAt - now) / 1000);
+        
+        if (diff <= 0) {
+            clearInterval(timerInterval);
+            document.getElementById('timer-container').classList.add('d-none');
+            alert("El tiempo de alguna de tus reservas ha expirado.");
+            cargarCarrito(); // Recargar para eliminar las expiradas de la vista
+            if (currentEventId) {
+                const sectorId = document.getElementById('sectorSelect')?.value;
+                if (sectorId) cargarAsientos(currentEventId, sectorId);
+            }
+            return;
+        }
+        
+        const timerContainer = document.getElementById('timer-container');
+        if (diff <= 60) {
+            timerContainer.classList.remove('alert-warning');
+            timerContainer.classList.add('alert-danger');
+        } else {
+            timerContainer.classList.remove('alert-danger');
+            timerContainer.classList.add('alert-warning');
+        }
+
+        const minutos = String(Math.floor(diff / 60)).padStart(2, '0');
+        const segundos = String(diff % 60).padStart(2, '0');
+        timerText.textContent = `${minutos}:${segundos}`;
+    }, 1000);
+}
+
+async function procesarPago() {
+    const token = localStorage.getItem('jwt_token');
+    if (!token) return;
+
+    try {
+        const res = await fetch(`http://localhost:5029/api/v1/reservations/pay`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -342,15 +400,12 @@ async function procesarPago() {
         const data = await res.json();
 
         if (res.ok) {
-            clearInterval(timerInterval);
-            document.getElementById('timer-container').classList.add('d-none');
-            
-            const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-            if (paymentModal) paymentModal.hide();
-            
             alert("¡Compra exitosa! Que disfrutes tu evento.");
-            const sectorId = document.getElementById('sectorSelect').value;
-            cargarAsientos(currentEventId, sectorId);
+            cargarCarrito();
+            if (currentEventId) {
+                const sectorId = document.getElementById('sectorSelect')?.value;
+                if (sectorId) cargarAsientos(currentEventId, sectorId);
+            }
         } else {
             alert("No se pudo procesar el pago: " + (data.error || "Error desconocido."));
         }
@@ -358,30 +413,9 @@ async function procesarPago() {
         alert("Error de red al intentar procesar el pago.");
     }
 }
-function cerrarModalPago() {
-
-    const paymentModalEl = document.getElementById('paymentModal');
-
-    const paymentModal =
-        bootstrap.Modal.getInstance(paymentModalEl);
-
-    if (paymentModal) {
-        paymentModal.hide();
-    }
-}
-const paymentModalElement = document.getElementById('paymentModal');
-
-paymentModalElement.addEventListener('shown.bs.modal', () => {
-    document.getElementById('timer-container')
-        .classList.add('disabled-timer');
-});
-
-paymentModalElement.addEventListener('hidden.bs.modal', () => {
-    document.getElementById('timer-container')
-        .classList.remove('disabled-timer');
-});
 
 
 // Llamamos a la función
 actualizarUI();
+cargarCarrito();
 obtenerEventos();

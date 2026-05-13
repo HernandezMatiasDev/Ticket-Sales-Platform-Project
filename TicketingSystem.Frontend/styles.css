@@ -150,15 +150,6 @@ body {
     border-radius: 8px !important;
     letter-spacing: normal;
 }
-.btn-exit
-{
-    width: 26px;
-    background-color: transparent;
-    border-radius: 8px;
-    font-family: "tahoma";
-    color: #415a77;
-    border: solid 1px #415a77;
-}
 
 /* Indicador de Escenario */
 .stage-indicator {
@@ -176,52 +167,25 @@ body {
     box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2); /* Pequeño efecto 3D */
 }
 
-
-
-
-/* Estilos para el temporizador flotante */
-#timer-container {
+/* Panel del Carrito de Reservas */
+.cart-panel {
     position: fixed;
-    top: 10em;
-    right: -3px;
-    width: 15%;
-    background-color: rgba(232, 74, 95, 0.95); /* Color a juego con la barra de navegación */
-    color: #111;
-    text-align: center;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    background-color: #1b263b;
+    color: white;
     padding: 15px;
-    font-weight: bold;
-    font-family: "Tahoma", sans-serif;
-    z-index: 1060; /* Asegurar que se posicione por encima de los modales (1050) */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease, right 0.2s ease;
-
-}
-#timer-container:hover {
-    transform: scale(1.01);
-    right: 0;
-}
-#timer-container.disabled-timer {
-    pointer-events: none;
-    cursor: default;
+    border-radius: 10px;
+    z-index: 1050;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 }
 
-#timer-container.disabled-timer:hover {
-    transform: none;
-}
-
-
-
-
-
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #415a77 inset !important;
-    -webkit-text-fill-color: white !important;
-    caret-color: white;
-    border: none !important;
-    transition: background-color 9999s ease-in-out 0s;
+.cart-item {
+    border-bottom: 1px solid #415a77;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
 }

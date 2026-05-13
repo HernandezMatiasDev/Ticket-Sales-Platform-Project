@@ -71,6 +71,7 @@ builder.Services.AddScoped<ICommandHandler<ConfirmPaymentCommand, bool>, Confirm
 builder.Services.AddScoped<IQueryHandler<GetEventsQuery, IEnumerable<Event>>, GetEventsHandler>();
 builder.Services.AddScoped<IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>>, GetSeatMapHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>>, GetEventSectorsHandler>();
+builder.Services.AddScoped<IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>>, GetPendingReservationsHandler>();
 
 
 // Registro del Servicio de Autenticación

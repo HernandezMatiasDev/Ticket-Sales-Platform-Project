@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Application.UseCases.Commands;
@@ -29,19 +30,24 @@ namespace TicketingSystem.Application.UseCases.Handlers
         {
             await _unitOfWork.BeginTransactionAsync();
 
-            var reservation = await _reservationRepository.GetByIdAsync(command.ReservationId);
-            if (reservation == null || reservation.UserId != command.UserId || reservation.Status != ReservationStatus.Pending)
-                throw new InvalidOperationException("La reserva es inválida, no te pertenece o ya no está pendiente.");
+            var pendingReservations = await _reservationRepository.GetPendingByUserIdAsync(command.UserId);
+            var reservationsList = pendingReservations.ToList();
+            
+            if (!reservationsList.Any())
+                throw new InvalidOperationException("No tienes reservas pendientes para pagar.");
 
-            var seat = await _seatRepository.GetByIdAsync(reservation.SeatId);
-            if (seat == null) throw new InvalidOperationException("La butaca asociada no existe.");
+            foreach (var reservation in reservationsList)
+            {
+                var seat = await _seatRepository.GetByIdAsync(reservation.SeatId);
+                if (seat == null) throw new InvalidOperationException($"La butaca asociada a la reserva {reservation.Id} no existe.");
 
-            reservation.MarkAsPaid();
-            seat.Sell();
+                reservation.MarkAsPaid();
+                seat.Sell();
 
-            await _reservationRepository.UpdateAsync(reservation);
-            await _seatRepository.UpdateAsync(seat);
-            await _auditLogRepository.AddAsync(new AuditLog(Guid.NewGuid(), command.UserId, "PAYMENT_SUCCESS", "Reservation", reservation.Id.ToString(), "Pago confirmado. Butaca vendida.", DateTime.UtcNow));
+                await _reservationRepository.UpdateAsync(reservation);
+                await _seatRepository.UpdateAsync(seat);
+                await _auditLogRepository.AddAsync(new AuditLog(Guid.NewGuid(), command.UserId, "PAYMENT_SUCCESS", "Reservation", reservation.Id.ToString(), "Pago confirmado. Butaca vendida.", DateTime.UtcNow));
+            }
 
             await _unitOfWork.CommitTransactionAsync();
             return true;

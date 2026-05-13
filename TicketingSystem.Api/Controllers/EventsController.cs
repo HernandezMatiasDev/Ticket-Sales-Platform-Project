@@ -14,15 +14,18 @@ public class EventsController : ControllerBase
     private readonly IQueryHandler<GetEventsQuery, IEnumerable<Event>> _getEventsHandler;
     private readonly IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>> _getSeatMapHandler;
     private readonly ICommandHandler<CreateEventCommand, int> _createEventHandler;
+    private readonly IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>> _getSectorsHandler;
 
     public EventsController(
         IQueryHandler<GetEventsQuery, IEnumerable<Event>> getEventsHandler, 
         IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>> getSeatMapHandler,
-        ICommandHandler<CreateEventCommand, int> createEventHandler)
+        ICommandHandler<CreateEventCommand, int> createEventHandler,
+        IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>> getSectorsHandler)
     {
         _getEventsHandler = getEventsHandler;
         _getSeatMapHandler = getSeatMapHandler;
         _createEventHandler = createEventHandler;
+        _getSectorsHandler = getSectorsHandler;
     }
 
     [HttpPost]
@@ -56,5 +59,14 @@ public class EventsController : ControllerBase
         // Mapeamos Seat a SeatMapDto y casteamos el Enum SeatStatus a int (0, 1, 2)
         var seatDtos = seatMap.Select(s => new SeatMapDto(s.Id, s.Number, s.Row, (int)s.Status));
         return Ok(seatDtos);
+    }
+
+    // GET: api/events/{eventId}/sectors
+    [HttpGet("{eventId}/sectors")]
+    public async Task<IActionResult> GetSectors(int eventId)
+    {
+        var sectors = await _getSectorsHandler.HandleAsync(new GetEventSectorsQuery(eventId));
+        var result = sectors.Select(s => new { s.Id, s.Name, s.Price });
+        return Ok(result);
     }
 }

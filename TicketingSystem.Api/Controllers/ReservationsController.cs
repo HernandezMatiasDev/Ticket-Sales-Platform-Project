@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using TicketingSystem.Application.UseCases.Commands;
 using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Domain.Entities;
 using TicketingSystem.Application.UseCases.Handlers;
+using TicketingSystem.Application.UseCases.Queries;
 
 namespace TicketingSystem.Api.Controllers
 {
@@ -22,14 +24,19 @@ namespace TicketingSystem.Api.Controllers
     {
         private readonly ICommandHandler<ReserveSeatCommand, Reservation> _reserveSeatHandler;
         private readonly ICommandHandler<ConfirmPaymentCommand, bool> _confirmPaymentHandler;
+        private readonly IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> _getPendingHandler;
 
         /// <summary>
         /// Inicializa el controlador inyectando el handler correspondiente.
         /// </summary>
-        public ReservationsController(ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler, ICommandHandler<ConfirmPaymentCommand, bool> confirmPaymentHandler)
+        public ReservationsController(
+            ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler, 
+            ICommandHandler<ConfirmPaymentCommand, bool> confirmPaymentHandler,
+            IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> getPendingHandler)
         {
             _reserveSeatHandler = reserveSeatHandler;
             _confirmPaymentHandler = confirmPaymentHandler;
+            _getPendingHandler = getPendingHandler;
         }
 
         /// <summary>
@@ -79,11 +86,24 @@ namespace TicketingSystem.Api.Controllers
             }
         }
 
+        [HttpGet("/api/v1/reservations/pending")]
+        public async Task<IActionResult> GetPending()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized(new { error = "El token es inválido." });
+            }
+
+            var pendingReservations = await _getPendingHandler.HandleAsync(new GetPendingReservationsQuery(userId));
+            return Ok(pendingReservations);
+        }
+
         /// <summary>
         /// Simula la confirmación de un pago para una reserva activa.
         /// </summary>
-        [HttpPost("{reservationId}/pay")]
-        public async Task<IActionResult> Pay(int eventId, Guid seatId, Guid reservationId)
+        [HttpPost("/api/v1/reservations/pay")]
+        public async Task<IActionResult> Pay()
         {
             try
             {
@@ -93,7 +113,7 @@ namespace TicketingSystem.Api.Controllers
                     return Unauthorized(new { error = "El token es inválido." });
                 }
 
-                var command = new ConfirmPaymentCommand(reservationId, userId);
+                var command = new ConfirmPaymentCommand(userId);
                 await _confirmPaymentHandler.HandleAsync(command);
                 
                 return Ok(new { message = "Pago confirmado exitosamente." });
