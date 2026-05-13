@@ -46,12 +46,18 @@ public class TicketingDbContext : IdentityDbContext<ApplicationUser, IdentityRol
 
         // 3. Crear 50 butacas para cada sector usando objetos anónimos y Guids deterministas
         var seats = new List<object>();
-        for (int i = 1; i <= 50; i++)
+
+        for(int j = 1; j <= 5; j++)
         {
-            // Guids que siempre serán los mismos en cada compilación gracias al formato
-            seats.Add(new { Id = new Guid($"11111111-1111-1111-1111-{i:D12}"), Number = i, Row = "V", SectorId = vipSectorId, Status = SeatStatus.Available, Version = 1 });
-            seats.Add(new { Id = new Guid($"22222222-2222-2222-2222-{i:D12}"), Number = i, Row = "G", SectorId = generalSectorId, Status = SeatStatus.Available, Version = 1 });
+            for (int i = 1; i <= 10; i++)
+            {
+                // Guids que siempre serán los mismos en cada compilación gracias al formato
+                seats.Add(new { Id = new Guid($"11111111-1111-1111-1111-{i+(j-1)*10:D12}"), Number = i+(j-1)*10, Row = j.ToString(), SectorId = vipSectorId, Status = SeatStatus.Available, Version = 1 });
+                seats.Add(new { Id = new Guid($"22222222-2222-2222-2222-{i+(j-1)*10:D12}"), Number = i+(j-1)*10, Row = j.ToString(), SectorId = generalSectorId, Status = SeatStatus.Available, Version = 1 });
+            }   
+            
         }
+       
         
         modelBuilder.Entity<Seat>().HasData(seats.ToArray());
 

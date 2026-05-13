@@ -70,6 +70,10 @@ async function obtenerEventos()
 let currentEventId = null;
 let currentReservationId = null;
 let currentSeatId = null;
+let currentSeatNumber = null;
+let currentSeatRow = null;
+let currentSectorName = null;
+
 
 function mostrarDetalles(id, nombre) {
     currentEventId = id;
@@ -110,9 +114,22 @@ async function cargarAsientos(eventId, sectorId) {
             let colorClass = a.status === 0 ? 'btn-outline-success' : (a.status === 1 ? 'btn-warning' : 'btn-danger');
             let disabled = a.status !== 0 ? 'disabled' : '';
             
-            html += `<button class="btn ${colorClass} seat-btn" ${disabled} onclick="reservarAsiento(${eventId}, '${a.id}')" title="Fila: ${a.row || '-'}, Asiento: ${a.number}">
-                        ${a.number}
-                     </button>`;
+        html += `
+        <button 
+            class="btn ${colorClass} seat-btn" 
+            ${disabled}
+            onclick="reservarAsiento(
+                ${eventId},
+                '${a.id}',
+                '${a.number}',
+                '${a.row || '-'}',
+                '${document.getElementById('sectorSelect').selectedOptions[0].text}'
+            )"
+            title="Fila: ${a.row || '-'}, Asiento: ${a.number}"
+        >
+            ${a.number}
+        </button>`;
+
         });
         html += '</div></div>';
         contenedorAsientos.innerHTML = html;
@@ -222,10 +239,22 @@ let timerInterval = null;
 
 function iniciarTemporizador() {
     clearInterval(timerInterval); // Limpiar cualquier temporizador previo
+
     const timerContainer = document.getElementById('timer-container');
     const timerText = document.getElementById('timer-text');
+
     timerContainer.classList.remove('d-none');
     
+    timerContainer.style.cursor = 'pointer';
+
+        timerContainer.onclick = () => {
+        const paymentModal = new bootstrap.Modal(
+            document.getElementById('paymentModal')
+        );
+
+        paymentModal.show();
+    };
+
     let tiempoRestante = 300; // 5 minutos en segundos
     
     timerInterval = setInterval(() => {
@@ -242,7 +271,12 @@ function iniciarTemporizador() {
     }, 1000);
 }
 
-async function reservarAsiento(eventId, seatId) {
+async function reservarAsiento(eventId, seatId, seatNumber, seatRow, sectorName) {
+    currentSeatId = seatId;
+    currentSeatNumber = seatNumber;
+    currentSeatRow = seatRow;
+    currentSectorName = sectorName;
+
     const token = localStorage.getItem('jwt_token');
     if (!token) {
         alert("Debes iniciar sesión para realizar una reserva.");
@@ -275,6 +309,11 @@ async function reservarAsiento(eventId, seatId) {
             if (seatModal) seatModal.hide();
             
             const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+
+            document.getElementById('payment-sector').textContent = currentSectorName;
+            document.getElementById('payment-row').textContent = currentSeatRow;
+            document.getElementById('payment-seat').textContent = currentSeatNumber;
+            
             paymentModal.show();
         } else {
             const errorMsg = data.error || "La butaca no está disponible.";
@@ -319,6 +358,29 @@ async function procesarPago() {
         alert("Error de red al intentar procesar el pago.");
     }
 }
+function cerrarModalPago() {
+
+    const paymentModalEl = document.getElementById('paymentModal');
+
+    const paymentModal =
+        bootstrap.Modal.getInstance(paymentModalEl);
+
+    if (paymentModal) {
+        paymentModal.hide();
+    }
+}
+const paymentModalElement = document.getElementById('paymentModal');
+
+paymentModalElement.addEventListener('shown.bs.modal', () => {
+    document.getElementById('timer-container')
+        .classList.add('disabled-timer');
+});
+
+paymentModalElement.addEventListener('hidden.bs.modal', () => {
+    document.getElementById('timer-container')
+        .classList.remove('disabled-timer');
+});
+
 
 // Llamamos a la función
 actualizarUI();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketingSystem.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using TicketingSystem.Infrastructure.Persistence;
 namespace TicketingSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(TicketingDbContext))]
-    partial class TicketingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260513013321_InitialCreate3")]
+    partial class InitialCreate3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -470,7 +473,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000011"),
-                            Number = 11,
+                            Number = 1,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -479,7 +482,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000011"),
-                            Number = 11,
+                            Number = 1,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -488,7 +491,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000012"),
-                            Number = 12,
+                            Number = 2,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -497,7 +500,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000012"),
-                            Number = 12,
+                            Number = 2,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -506,7 +509,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000013"),
-                            Number = 13,
+                            Number = 3,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -515,7 +518,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000013"),
-                            Number = 13,
+                            Number = 3,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -524,7 +527,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000014"),
-                            Number = 14,
+                            Number = 4,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -533,7 +536,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000014"),
-                            Number = 14,
+                            Number = 4,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -542,7 +545,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000015"),
-                            Number = 15,
+                            Number = 5,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -551,7 +554,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000015"),
-                            Number = 15,
+                            Number = 5,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -560,7 +563,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000016"),
-                            Number = 16,
+                            Number = 6,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -569,7 +572,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000016"),
-                            Number = 16,
+                            Number = 6,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -578,7 +581,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000017"),
-                            Number = 17,
+                            Number = 7,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -587,7 +590,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000017"),
-                            Number = 17,
+                            Number = 7,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -596,7 +599,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000018"),
-                            Number = 18,
+                            Number = 8,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -605,7 +608,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000018"),
-                            Number = 18,
+                            Number = 8,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -614,7 +617,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000019"),
-                            Number = 19,
+                            Number = 9,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -623,7 +626,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000019"),
-                            Number = 19,
+                            Number = 9,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -632,7 +635,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000020"),
-                            Number = 20,
+                            Number = 10,
                             Row = "2",
                             SectorId = 1,
                             Status = 0,
@@ -641,7 +644,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000020"),
-                            Number = 20,
+                            Number = 10,
                             Row = "2",
                             SectorId = 2,
                             Status = 0,
@@ -650,7 +653,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000021"),
-                            Number = 21,
+                            Number = 1,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -659,7 +662,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000021"),
-                            Number = 21,
+                            Number = 1,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -668,7 +671,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000022"),
-                            Number = 22,
+                            Number = 2,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -677,7 +680,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000022"),
-                            Number = 22,
+                            Number = 2,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -686,7 +689,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000023"),
-                            Number = 23,
+                            Number = 3,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -695,7 +698,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000023"),
-                            Number = 23,
+                            Number = 3,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -704,7 +707,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000024"),
-                            Number = 24,
+                            Number = 4,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -713,7 +716,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000024"),
-                            Number = 24,
+                            Number = 4,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -722,7 +725,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000025"),
-                            Number = 25,
+                            Number = 5,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -731,7 +734,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000025"),
-                            Number = 25,
+                            Number = 5,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -740,7 +743,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000026"),
-                            Number = 26,
+                            Number = 6,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -749,7 +752,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000026"),
-                            Number = 26,
+                            Number = 6,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -758,7 +761,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000027"),
-                            Number = 27,
+                            Number = 7,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -767,7 +770,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000027"),
-                            Number = 27,
+                            Number = 7,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -776,7 +779,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000028"),
-                            Number = 28,
+                            Number = 8,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -785,7 +788,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000028"),
-                            Number = 28,
+                            Number = 8,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -794,7 +797,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000029"),
-                            Number = 29,
+                            Number = 9,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -803,7 +806,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000029"),
-                            Number = 29,
+                            Number = 9,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -812,7 +815,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000030"),
-                            Number = 30,
+                            Number = 10,
                             Row = "3",
                             SectorId = 1,
                             Status = 0,
@@ -821,7 +824,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000030"),
-                            Number = 30,
+                            Number = 10,
                             Row = "3",
                             SectorId = 2,
                             Status = 0,
@@ -830,7 +833,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000031"),
-                            Number = 31,
+                            Number = 1,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -839,7 +842,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000031"),
-                            Number = 31,
+                            Number = 1,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -848,7 +851,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000032"),
-                            Number = 32,
+                            Number = 2,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -857,7 +860,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000032"),
-                            Number = 32,
+                            Number = 2,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -866,7 +869,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000033"),
-                            Number = 33,
+                            Number = 3,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -875,7 +878,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000033"),
-                            Number = 33,
+                            Number = 3,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -884,7 +887,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000034"),
-                            Number = 34,
+                            Number = 4,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -893,7 +896,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000034"),
-                            Number = 34,
+                            Number = 4,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -902,7 +905,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000035"),
-                            Number = 35,
+                            Number = 5,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -911,7 +914,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000035"),
-                            Number = 35,
+                            Number = 5,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -920,7 +923,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000036"),
-                            Number = 36,
+                            Number = 6,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -929,7 +932,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000036"),
-                            Number = 36,
+                            Number = 6,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -938,7 +941,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000037"),
-                            Number = 37,
+                            Number = 7,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -947,7 +950,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000037"),
-                            Number = 37,
+                            Number = 7,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -956,7 +959,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000038"),
-                            Number = 38,
+                            Number = 8,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -965,7 +968,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000038"),
-                            Number = 38,
+                            Number = 8,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -974,7 +977,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000039"),
-                            Number = 39,
+                            Number = 9,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -983,7 +986,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000039"),
-                            Number = 39,
+                            Number = 9,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -992,7 +995,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000040"),
-                            Number = 40,
+                            Number = 10,
                             Row = "4",
                             SectorId = 1,
                             Status = 0,
@@ -1001,7 +1004,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000040"),
-                            Number = 40,
+                            Number = 10,
                             Row = "4",
                             SectorId = 2,
                             Status = 0,
@@ -1010,7 +1013,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000041"),
-                            Number = 41,
+                            Number = 1,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1019,7 +1022,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000041"),
-                            Number = 41,
+                            Number = 1,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1028,7 +1031,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000042"),
-                            Number = 42,
+                            Number = 2,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1037,7 +1040,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000042"),
-                            Number = 42,
+                            Number = 2,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1046,7 +1049,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000043"),
-                            Number = 43,
+                            Number = 3,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1055,7 +1058,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000043"),
-                            Number = 43,
+                            Number = 3,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1064,7 +1067,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000044"),
-                            Number = 44,
+                            Number = 4,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1073,7 +1076,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000044"),
-                            Number = 44,
+                            Number = 4,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1082,7 +1085,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000045"),
-                            Number = 45,
+                            Number = 5,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1091,7 +1094,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000045"),
-                            Number = 45,
+                            Number = 5,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1100,7 +1103,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000046"),
-                            Number = 46,
+                            Number = 6,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1109,7 +1112,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000046"),
-                            Number = 46,
+                            Number = 6,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1118,7 +1121,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000047"),
-                            Number = 47,
+                            Number = 7,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1127,7 +1130,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000047"),
-                            Number = 47,
+                            Number = 7,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1136,7 +1139,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000048"),
-                            Number = 48,
+                            Number = 8,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1145,7 +1148,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000048"),
-                            Number = 48,
+                            Number = 8,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1154,7 +1157,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000049"),
-                            Number = 49,
+                            Number = 9,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1163,7 +1166,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000049"),
-                            Number = 49,
+                            Number = 9,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,
@@ -1172,7 +1175,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-000000000050"),
-                            Number = 50,
+                            Number = 10,
                             Row = "5",
                             SectorId = 1,
                             Status = 0,
@@ -1181,7 +1184,7 @@ namespace TicketingSystem.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-000000000050"),
-                            Number = 50,
+                            Number = 10,
                             Row = "5",
                             SectorId = 2,
                             Status = 0,

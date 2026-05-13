@@ -114,15 +114,25 @@
     </div>
 
     <!-- Modal de Pago -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade  mt-5" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="paymentModalLabel">Confirmar Pago</h5>
+                    <button class="btn-exit"  onclick="cerrarModalPago()"> x </button>
                 </div>
                 <div class="modal-body text-center">
+
                     <p>Reserva confirmada. Tienes 5 minutos para pagar.</p>
-                    <h3 class="text-success mb-4">Total a pagar: $2000</h3>
+
+                    <div class="seat-payment-info mb-4">
+                        <p><strong>Sector:</strong> <span id="payment-sector"></span></p>
+                        <p><strong>Fila:</strong> <span id="payment-row"></span></p>
+                        <p><strong>Asiento:</strong> <span id="payment-seat"></span></p>
+                    </div>
+
+                    <h3 class="text-success mb-4" id="pago-monto-total">Total a pagar: $0sff</h3>
+                    
                     <button class="btn btn-success w-100" onclick="procesarPago()">Simular Pago</button>
                 </div>
             </div>
