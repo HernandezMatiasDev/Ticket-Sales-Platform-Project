@@ -25,6 +25,7 @@ namespace TicketingSystem.Api.Controllers
         private readonly ICommandHandler<ReserveSeatCommand, Reservation> _reserveSeatHandler;
         private readonly ICommandHandler<ConfirmPaymentCommand, bool> _confirmPaymentHandler;
         private readonly IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> _getPendingHandler;
+        private readonly ICommandHandler<CancelReservationCommand, bool> _cancelReservationHandler;
 
         /// <summary>
         /// Inicializa el controlador inyectando el handler correspondiente.
@@ -32,11 +33,13 @@ namespace TicketingSystem.Api.Controllers
         public ReservationsController(
             ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler, 
             ICommandHandler<ConfirmPaymentCommand, bool> confirmPaymentHandler,
-            IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> getPendingHandler)
+            IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> getPendingHandler,
+            ICommandHandler<CancelReservationCommand, bool> cancelReservationHandler)
         {
             _reserveSeatHandler = reserveSeatHandler;
             _confirmPaymentHandler = confirmPaymentHandler;
             _getPendingHandler = getPendingHandler;
+            _cancelReservationHandler = cancelReservationHandler;
         }
 
         /// <summary>
@@ -125,6 +128,32 @@ namespace TicketingSystem.Api.Controllers
             catch (Exception)
             {
                 return StatusCode(500, new { error = "Ocurrió un error al procesar el pago." });
+            }
+        }
+
+        [HttpDelete("{reservationId}")]
+        public async Task<IActionResult> Cancel(Guid reservationId)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+                {
+                    return Unauthorized(new { error = "El token es inválido." });
+                }
+
+                var command = new CancelReservationCommand(reservationId, userId);
+                await _cancelReservationHandler.HandleAsync(command);
+                
+                return Ok(new { message = "Reserva cancelada exitosamente." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error al cancelar la reserva." });
             }
         }
     }

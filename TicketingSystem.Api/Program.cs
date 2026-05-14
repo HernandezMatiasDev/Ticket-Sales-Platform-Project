@@ -72,6 +72,7 @@ builder.Services.AddScoped<IQueryHandler<GetEventsQuery, IEnumerable<Event>>, Ge
 builder.Services.AddScoped<IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>>, GetSeatMapHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>>, GetEventSectorsHandler>();
 builder.Services.AddScoped<IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>>, GetPendingReservationsHandler>();
+builder.Services.AddScoped<ICommandHandler<CancelReservationCommand, bool>, CancelReservationHandler>();
 
 
 // Registro del Servicio de Autenticación

@@ -137,7 +137,7 @@ async function cargarAsientos(eventId, sectorId) {
         <button 
             class="btn ${colorClass} seat-btn" 
             ${disabled}
-            onclick="reservarAsiento(${eventId}, '${a.id}')"
+            onclick="reservarAsiento(${eventId}, '${a.id}', ${a.number})"
             title="Fila: ${a.row || '-'}, Asiento: ${a.number}"
         >
             ${a.number}
@@ -242,7 +242,13 @@ function cerrarSesion() {
     window.location.reload();
 }
 
-async function reservarAsiento(eventId, seatId) {
+async function reservarAsiento(eventId, seatId, seatNumber) {
+    const sectorSelect = document.getElementById('sectorSelect');
+    const sectorName = sectorSelect.options[sectorSelect.selectedIndex].text;
+    const price = sectorSelect.options[sectorSelect.selectedIndex].getAttribute('data-price');
+
+    if (!confirm(`¿Seguro que quieres seleccionar la silla ${seatNumber} del sector ${sectorName} por $${price}?`)) return;
+
     const token = localStorage.getItem('jwt_token');
     if (!token) {
         alert("Debes iniciar sesión para realizar una reserva.");
@@ -338,6 +344,7 @@ async function cargarCarrito() {
                         <strong>Sector:</strong> ${r.sectorName} <br>
                         <strong>Fila:</strong> ${r.row} - <strong>Asiento:</strong> ${r.seatNumber} <br>
                         <span class="text-success">$${r.price}</span>
+                        <button class="btn btn-sm btn-outline-danger mt-2 w-100" onclick="eliminarReserva('${r.reservationId}')">Eliminar del carrito</button>
                     </div>
                 `;
             });
@@ -414,6 +421,35 @@ async function procesarPago() {
     }
 }
 
+async function eliminarReserva(reservationId) {
+    if (!confirm("¿Estás seguro de que deseas eliminar esta silla de tu carrito? Quedará disponible para otros usuarios.")) return;
+
+    const token = localStorage.getItem('jwt_token');
+    if (!token) return;
+
+    try {
+        const res = await fetch(`http://localhost:5029/api/v1/events/0/seats/0/reservations/${reservationId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (res.ok) {
+            cargarCarrito();
+            if (currentEventId) {
+                const sectorId = document.getElementById('sectorSelect').value;
+                if (sectorId) cargarAsientos(currentEventId, sectorId);
+            }
+        } else {
+            const data = await res.json();
+            alert("Error al eliminar la reserva: " + (data.error || "Error desconocido"));
+        }
+    } catch (e) {
+        console.error("Error al eliminar la reserva:", e);
+        alert("Error de red al intentar eliminar la reserva.");
+    }
+}
 
 // Llamamos a la función
 actualizarUI();
