@@ -1,3 +1,5 @@
+
+
 /* El fondo y colores base */
 body {
     background-image: 
@@ -170,18 +172,46 @@ body {
 /* Panel del Carrito de Reservas */
 .cart-panel {
     position: fixed;
-    top: 80px;
-    right: 20px;
-    width: 300px;
+    top: 5rem;
+    right: 10%;
+    width: 80%;
     background-color: #1b263b;
     color: white;
     padding: 15px;
     border-radius: 10px;
     z-index: 1050;
     box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    max-height: calc(100vh - 100px);
     overflow-y: auto;
 }
+
+.timer-btn {
+    position: fixed;
+    top: 10rem;
+    right: -3px;
+    z-index: 9999;
+    max-width: 15%;
+    height: 20%;
+
+    background: #E84A5F;
+    color: white;
+
+    padding: 12px 18px;
+
+    font-weight: bold;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+    transition: transform 0.2s ease, right 0.2s ease;
+
+    cursor: pointer;
+}
+
+.timer-btn:hover,
+.timer-btn:focus {
+    transform: scale(1.01);
+    right: 0;
+}
+
 
 .cart-item {
     border-bottom: 1px solid #415a77;

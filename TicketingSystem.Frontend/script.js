@@ -236,10 +236,11 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
 });
 
 function cerrarSesion() {
+    
     localStorage.removeItem('jwt_token');
     localStorage.removeItem('user_email');
     actualizarUI();
-    window.location.reload();
+    window.location.href = "index.html";
 }
 
 async function reservarAsiento(eventId, seatId, seatNumber) {
@@ -325,6 +326,10 @@ async function cargarCarrito() {
             if (reservas.length === 0) {
                 cartPanel.classList.add('d-none');
                 clearInterval(timerInterval);
+
+                if (window.location.pathname.includes("reserves.html")) {
+                    window.location.href = "index.html";
+                }
                 return;
             }
 
@@ -413,6 +418,7 @@ async function procesarPago() {
                 const sectorId = document.getElementById('sectorSelect')?.value;
                 if (sectorId) cargarAsientos(currentEventId, sectorId);
             }
+            window.location.href = "index.html"
         } else {
             alert("No se pudo procesar el pago: " + (data.error || "Error desconocido."));
         }
