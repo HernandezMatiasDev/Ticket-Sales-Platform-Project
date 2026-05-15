@@ -9,6 +9,8 @@ namespace TicketingSystem.Application.UseCases.Queries
         string Row, 
         string SectorName, 
         decimal Price, 
-        DateTime ExpiresAt
+        DateTime ExpiresAt,
+        int EventId,
+        int SectorId
     );
 }

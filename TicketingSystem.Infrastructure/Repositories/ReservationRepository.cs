@@ -58,6 +58,16 @@ namespace TicketingSystem.Infrastructure.Repositories
         }
 
         /// <summary>
+        /// Obtiene todas las reservas pagadas para un usuario.
+        /// </summary>
+        public async Task<IEnumerable<Reservation>> GetPaidByUserIdAsync(int userId)
+        {
+            return await _context.Set<Reservation>()
+                .Where(r => r.UserId == userId && r.Status == ReservationStatus.Paid)
+                .ToListAsync();
+        }
+
+        /// <summary>
         /// Obtiene todas las reservas que están en estado pendiente y cuyo tiempo de expiración
         /// es menor o igual al tiempo actual proporcionado.
         /// </summary>

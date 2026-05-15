@@ -5,29 +5,37 @@ using TicketingSystem.Application.UseCases.Queries;
 
 namespace TicketingSystem.Application.UseCases.Handlers
 {
-    public class GetPendingReservationsHandler : IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>>
+    public class GetPaidReservationsHandler : IQueryHandler<GetPaidReservationsQuery, IEnumerable<PendingReservationDto>>
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly ISeatRepository _seatRepository;
 
-        public GetPendingReservationsHandler(IReservationRepository reservationRepository, ISeatRepository seatRepository)
+        public GetPaidReservationsHandler(IReservationRepository reservationRepository, ISeatRepository seatRepository)
         {
             _reservationRepository = reservationRepository;
             _seatRepository = seatRepository;
         }
 
-        public async Task<IEnumerable<PendingReservationDto>> HandleAsync(GetPendingReservationsQuery query)
+        public async Task<IEnumerable<PendingReservationDto>> HandleAsync(GetPaidReservationsQuery query)
         {
-            var pendingReservations = await _reservationRepository.GetPendingByUserIdAsync(query.UserId);
+            var paidReservations = await _reservationRepository.GetPaidByUserIdAsync(query.UserId);
             var result = new List<PendingReservationDto>();
 
-            foreach (var reservation in pendingReservations)
+            foreach (var reservation in paidReservations)
             {
                 var seat = await _seatRepository.GetByIdAsync(reservation.SeatId);
                 if (seat != null && seat.Sector != null)
                 {
                     result.Add(new PendingReservationDto(
-                        reservation.Id, seat.Id, seat.Number, seat.Row, seat.Sector.Name, seat.Sector.Price, reservation.ExpiresAt, seat.Sector.EventId, seat.SectorId
+                        reservation.Id,
+                        seat.Id,
+                        seat.Number,
+                        seat.Row,
+                        seat.Sector.Name,
+                        seat.Sector.Price,
+                        reservation.ExpiresAt,
+                        seat.Sector.EventId,
+                        seat.SectorId
                     ));
                 }
             }

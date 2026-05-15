@@ -44,7 +44,8 @@ public class EventsController : ControllerBase
         var events = await _getEventsHandler.HandleAsync(new GetEventsQuery());
         
         // Mapeamos las entidades Event de dominio hacia EventDto para el cliente
-        var eventDtos = events.Select(e => new EventDto(e.Id, e.Name, e.EventDate, e.Venue));
+        var eventDtos = events.Select(e => new EventDto(e.Id, e.Name, e.EventDate, e.Venue, 
+            !e.Sectors.Any(sec => sec.Seats.Any(seat => seat.Status == SeatStatus.Available))));
         return Ok(eventDtos);
     }
 

@@ -72,6 +72,7 @@ builder.Services.AddScoped<IQueryHandler<GetEventsQuery, IEnumerable<Event>>, Ge
 builder.Services.AddScoped<IQueryHandler<GetSeatMapQuery, IEnumerable<Seat>>, GetSeatMapHandler>();
 builder.Services.AddScoped<IQueryHandler<GetEventSectorsQuery, IEnumerable<Sector>>, GetEventSectorsHandler>();
 builder.Services.AddScoped<IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>>, GetPendingReservationsHandler>();
+builder.Services.AddScoped<IQueryHandler<GetPaidReservationsQuery, IEnumerable<PendingReservationDto>>, GetPaidReservationsHandler>();
 builder.Services.AddScoped<ICommandHandler<CancelReservationCommand, bool>, CancelReservationHandler>();
 
 
@@ -93,6 +94,15 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// // === RESETEO DE BASE DE DATOS (SOLO PARA DESARROLLO) ===
+// // Esto fuerza a EF Core a borrar y recrear la BD con los datos semilla (Sectores y Butacas)
+// using (var scope = app.Services.CreateScope())
+// {
+//     var db = scope.ServiceProvider.GetRequiredService<TicketingDbContext>();
+//     db.Database.EnsureDeleted();
+//     db.Database.EnsureCreated();
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

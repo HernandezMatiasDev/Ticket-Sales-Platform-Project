@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TicketingSystem.Application.Interfaces;
 using TicketingSystem.Application.UseCases.Commands;
@@ -47,6 +48,13 @@ public class ReserveSeatHandler : ICommandHandler<ReserveSeatCommand, Reservatio
             // 3. Crear la instancia de Reservation usando su constructor
             var now = DateTime.UtcNow;
             var expiration = now.AddMinutes(5);
+
+            var pendingReservations = await _reservationRepository.GetPendingByUserIdAsync(command.UserId);
+            var firstPending = pendingReservations.FirstOrDefault();
+            if (firstPending != null)
+            {
+                expiration = firstPending.ExpiresAt;
+            }
 
             var reservation = new Reservation(
                 Guid.NewGuid(),

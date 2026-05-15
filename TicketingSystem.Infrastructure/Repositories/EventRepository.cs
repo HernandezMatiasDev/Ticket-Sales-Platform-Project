@@ -22,7 +22,10 @@ public class EventRepository : IEventRepository
     public async Task<IEnumerable<Event>> GetAllAsync()
     {
         // Traemos los eventos de la base de datos
-        return await _context.Events.ToListAsync();
+        return await _context.Events
+            .Include(e => e.Sectors)
+                .ThenInclude(s => s.Seats)
+            .ToListAsync();
     }
 
     public async Task<Event?> GetByIdWithDetailsAsync(int eventId)

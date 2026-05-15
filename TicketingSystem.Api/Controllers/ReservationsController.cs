@@ -26,6 +26,7 @@ namespace TicketingSystem.Api.Controllers
         private readonly ICommandHandler<ConfirmPaymentCommand, bool> _confirmPaymentHandler;
         private readonly IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> _getPendingHandler;
         private readonly ICommandHandler<CancelReservationCommand, bool> _cancelReservationHandler;
+        private readonly IQueryHandler<GetPaidReservationsQuery, IEnumerable<PendingReservationDto>> _getPaidHandler;
 
         /// <summary>
         /// Inicializa el controlador inyectando el handler correspondiente.
@@ -34,12 +35,14 @@ namespace TicketingSystem.Api.Controllers
             ICommandHandler<ReserveSeatCommand, Reservation> reserveSeatHandler, 
             ICommandHandler<ConfirmPaymentCommand, bool> confirmPaymentHandler,
             IQueryHandler<GetPendingReservationsQuery, IEnumerable<PendingReservationDto>> getPendingHandler,
-            ICommandHandler<CancelReservationCommand, bool> cancelReservationHandler)
+            ICommandHandler<CancelReservationCommand, bool> cancelReservationHandler,
+            IQueryHandler<GetPaidReservationsQuery, IEnumerable<PendingReservationDto>> getPaidHandler)
         {
             _reserveSeatHandler = reserveSeatHandler;
             _confirmPaymentHandler = confirmPaymentHandler;
             _getPendingHandler = getPendingHandler;
             _cancelReservationHandler = cancelReservationHandler;
+            _getPaidHandler = getPaidHandler;
         }
 
         /// <summary>
@@ -100,6 +103,19 @@ namespace TicketingSystem.Api.Controllers
 
             var pendingReservations = await _getPendingHandler.HandleAsync(new GetPendingReservationsQuery(userId));
             return Ok(pendingReservations);
+        }
+
+        [HttpGet("/api/v1/reservations/paid")]
+        public async Task<IActionResult> GetPaid()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+            {
+                return Unauthorized(new { error = "El token es inválido." });
+            }
+
+            var paidReservations = await _getPaidHandler.HandleAsync(new GetPaidReservationsQuery(userId));
+            return Ok(paidReservations);
         }
 
         /// <summary>

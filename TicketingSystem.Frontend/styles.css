@@ -45,6 +45,12 @@ html, body {
     transition: transform 0.2s;
 }
 
+.event-sold-out {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
 .card:hover {
     transform: translateY(-5px);
 }
@@ -57,13 +63,22 @@ html, body {
 }
 .navbar-fixed-custom {
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
-
     z-index: 9999;
+    background: rgba(232, 74, 95, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Sombra para el brand */
+.navbar-brand {
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
 /* Ajuste para que el texto de los eventos se vea bien sobre el salmón */
@@ -131,6 +146,11 @@ html, body {
 
 
 
+/* Modal de confirmación un poco más arriba */
+.modal-dialog-elevated {
+    margin-top: 15vh;
+}
+
 .modal-content {
     margin-top: 12vh;
     background-color: #1b263b;
@@ -174,6 +194,12 @@ html, body {
     letter-spacing: normal;
 }
 
+/* Clases para el mapa de solo lectura */
+.seat-view-only { pointer-events: none !important; cursor: default !important; }
+.seat-grey { background-color: #6c757d !important; color: white !important; border-color: #5c636a !important; }
+.seat-pink { background-color: #e83e8c !important; color: white !important; border-color: #d63384 !important; }
+.seat-green { background-color: #198754 !important; color: white !important; border-color: #146c43 !important; }
+
 /* Indicador de Escenario */
 .stage-indicator {
     background-color: #E84A5F;
@@ -194,30 +220,29 @@ html, body {
 
 .timer-btn {
     position: fixed;
-    top: 10rem;
-    right: -3px;
+    bottom: 2rem;
+    right: 2rem;
     z-index: 9999;
-    max-width: 15%;
-    height: 20%;
+    width: auto;
 
     background: #E84A5F;
     color: white;
 
-    padding: 12px 18px;
+    padding: 15px 25px;
+    border-radius: 50px;
 
     font-weight: bold;
 
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 
-    transition: transform 0.2s ease, right 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 
     cursor: pointer;
 }
 
 .timer-btn:hover,
 .timer-btn:focus {
-    transform: scale(1.01);
-    right: 0;
+    transform: scale(1.05);
 }
 
 /* Panel del Carrito de Reservas */
@@ -230,11 +255,10 @@ html, body {
     background-color: #1b263b;
     color: white;
 
-    padding: 15px;
-    border-radius: 10px;
-
-
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    background: linear-gradient(145deg, #1b263b, #20304a);
 
 }
 #cart-items {
@@ -247,19 +271,32 @@ html, body {
 
 /* Tarjeta individual */
 .cart-item {
-
     border: 1px solid #415a77;
-
-
+    background-color: rgba(65, 90, 119, 0.4);
     padding: 15px;
-
+    border-radius: 12px;
     margin-bottom: 0;
-
     font-size: 0.9rem;
-
-    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 
     transition: transform 0.2s ease;
+}
+
+.floating-back-btn {
+    margin-left: 10px;
+    background-color: #222;
+    color: white;
+    border-radius: 50px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    z-index: 10000;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.floating-back-btn:hover {
+    transform: scale(1.05);
+    color: white;
 }
 
 .cart-item:hover {
