@@ -398,7 +398,7 @@ async function cargarCarrito() {
                             </div>
                             <div class="mt-3 text-center border-top border-secondary pt-3">
                                 <div class="fs-4 fw-bold text-success mb-2">$${r.price}</div>
-                                <button class="btn btn-sm btn-outline-danger w-100 rounded-pill fw-bold" onclick="eliminarReserva('${r.reservationId}')">
+                                <button class="btn btn-sm btn-reserves btn-outline-danger w-100 rounded-pill fw-bold" onclick="eliminarReserva('${r.reservationId}')">
                                     <i class="bi bi-trash me-1"></i>Eliminar
                                 </button>
                             </div>
@@ -440,6 +440,7 @@ function iniciarTemporizador(expiresAt) {
                 if (cartItems) cartItems.innerHTML = '';
 
                 alert("¡Uy! Se acabó el tiempo de tu reserva. Las butacas han vuelto a estar disponibles, pero puedes volver a intentarlo.");
+               
                 obtenerEventos();
                 if (currentEventId) {
                     const sectorId = document.getElementById('sectorSelect')?.value;
